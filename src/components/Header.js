@@ -1,7 +1,7 @@
 import logo from './../assets/molotok_logo.svg'
 import './../styles/header.css'
 
-export default function Header() {
+export default function Header({deleteAll}) {
     return (
         <header>
             <div className="container">
@@ -80,7 +80,7 @@ export default function Header() {
                         </svg>
                     </a>
 
-                    <div className="grey-hover">
+                    <div className="grey-hover" onClick={deleteAll}>
                         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlnsXlink="http://www.w3.org/1999/xlink"
                              width="512" height="512" x="0" y="0"
                              viewBox="0 0 512 512" style={{enableBackground: "new 0 0 512 512"}} xmlSpace="preserve"

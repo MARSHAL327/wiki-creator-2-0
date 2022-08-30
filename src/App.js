@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Header from "./components/Header";
 import WorkSpace from "./components/WorkSpace";
 import ActionButtons from "./components/ActionButtons";
@@ -8,7 +8,7 @@ import OutputCode from "./components/OutputCode";
 
 
 export default function App() {
-
+    // Заполняем основные данные
     const serverFields = [
         {
             name: "Название сайта (обязательно для заполнения)",
@@ -110,7 +110,7 @@ export default function App() {
             ]
         }
     ]
-    let [sectionsData, setSectionsData] = useState({
+    let defaultSectionData = {
         "Правила работы": {
             name: "Правила работы",
             styles: {
@@ -152,85 +152,97 @@ export default function App() {
             ],
             createdFields: [],
         },
-        // "Боевые сайты": {
-        //     name: "Боевые сайты",
-        //     fields: serverFields,
-        //     createdFields: [],
-        // },
+        "Боевые сайты": {
+            name: "Боевые сайты",
+            fields: serverFields,
+            createdFields: [],
+        },
         "Тестовые сайты": {
             name: "Тестовые сайты",
             fields: serverFields,
             createdFields: [],
         },
-        // "Хостинг": {
-        //     name: "Хостинг",
-        //     fields: [
-        //         {
-        //             name: "Ссылка на хостинг",
-        //             type: "link"
-        //         },
-        //         {
-        //             name: "Логин",
-        //             type: "text",
-        //             showFieldName: true
-        //         },
-        //         {
-        //             name: "Пароль",
-        //             type: "password",
-        //             showFieldName: true
-        //         },
-        //     ],
-        //     createdFields: [],
-        // },
-        // "Git": {
-        //     name: "Git",
-        //     fields: [
-        //         {
-        //             name: "Ссылка на git",
-        //             type: "link"
-        //         },
-        //         {
-        //             name: "Логин",
-        //             type: "text",
-        //             showFieldName: true
-        //         },
-        //         {
-        //             name: "Пароль",
-        //             type: "password",
-        //             showFieldName: true
-        //         },
-        //     ],
-        //     createdFields: [],
-        // },
-        // "Прочее": {
-        //     name: "Прочее",
-        //     fields: [
-        //         {
-        //             name: "Заголовок",
-        //             type: "h2"
-        //         },
-        //         {
-        //             name: "Описание",
-        //             type: "text"
-        //         },
-        //         {
-        //             name: "Ссылка",
-        //             type: "link"
-        //         },
-        //         {
-        //             name: "Логин",
-        //             type: "text",
-        //             showFieldName: true
-        //         },
-        //         {
-        //             name: "Пароль",
-        //             type: "password",
-        //             showFieldName: true
-        //         },
-        //     ],
-        //     createdFields: [],
-        // },
-    })
+        "Хостинг": {
+            name: "Хостинг",
+            fields: [
+                {
+                    name: "Ссылка на хостинг",
+                    type: "link"
+                },
+                {
+                    name: "Логин",
+                    type: "text",
+                    showFieldName: true
+                },
+                {
+                    name: "Пароль",
+                    type: "password",
+                    showFieldName: true
+                },
+            ],
+            createdFields: [],
+        },
+        "Git": {
+            name: "Git",
+            fields: [
+                {
+                    name: "Ссылка на git",
+                    type: "link"
+                },
+                {
+                    name: "Логин",
+                    type: "text",
+                    showFieldName: true
+                },
+                {
+                    name: "Пароль",
+                    type: "password",
+                    showFieldName: true
+                },
+            ],
+            createdFields: [],
+        },
+        "Прочее": {
+            name: "Прочее",
+            fields: [
+                {
+                    name: "Заголовок",
+                    type: "h2"
+                },
+                {
+                    name: "Описание",
+                    type: "text"
+                },
+                {
+                    name: "Ссылка",
+                    type: "link"
+                },
+                {
+                    name: "Логин",
+                    type: "text",
+                    showFieldName: true
+                },
+                {
+                    name: "Пароль",
+                    type: "password",
+                    showFieldName: true
+                },
+            ],
+            createdFields: [],
+        },
+    }
+
+    let localData = localStorage.getItem("sectionsData") !== null ? JSON.parse(localStorage.getItem("sectionsData")) : {};
+    Object.assign(defaultSectionData, localData)
+
+    let [sectionsData, setSectionsData] = useState(defaultSectionData)
+
+    // Следим за изменением данных
+    useEffect(() => {
+        localStorage.setItem('sectionsData', JSON.stringify(sectionsData))
+    },[sectionsData])
+
+    // Остальные переменные
     let [outputMode, setOutputMode] = useState(false)
     let fieldDeepDepthLevel = ["Боевые сайты", "Тестовые сайты"]
     let commentObject = {
@@ -381,10 +393,22 @@ export default function App() {
         return filteredSections;
     }
 
+    function deleteAll() {
+        localStorage.setItem('sectionsData', null)
+
+        for (let key in sectionsData) {
+            sectionsData[key].createdFields = [];
+        }
+
+        setSectionsData({...sectionsData})
+    }
+
     return (
         <Context.Provider value={{addSectionItem, removeSectionItem, changeSectionItem}}>
             <div>
-                <Header/>
+                <Header
+                    deleteAll={deleteAll}
+                />
                 <div className="container">
                     <div className="main-grid">
                         <ActionButtons
