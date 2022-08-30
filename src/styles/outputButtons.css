@@ -1,0 +1,35 @@
+.no-sections {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 38px;
+    color: var(--dark-grey);
+}
+
+.copy-btns {
+    display: flex;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    gap: 20px;
+}
+
+.copy-btn {
+    position: relative;
+    background-color: var(--green-color);
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: #ffffff;
+    transition: .3s;
+}
+
+.copy-btn:hover {
+    transition: .3s;
+    filter: var(--light-shadow);
+    cursor: pointer;
+}
+
+#html-code {
+    height: 100%;
+    overflow: auto;
+}

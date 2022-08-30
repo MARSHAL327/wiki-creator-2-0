@@ -1,0 +1,81 @@
+.section-item {
+    position: relative;
+}
+
+.section-item__icon {
+    position: absolute;
+    top: 13px;
+    right: 13px;
+    background-color: var(--light-grey);
+}
+
+.section-item__icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.section-item input, .section-item textarea {
+    border-radius: 5px;
+    width: 100%;
+    margin-bottom: 10px;
+    background-color: var(--light-grey);
+    padding: 15px 40px 15px 15px;
+    box-sizing: border-box;
+    border: 0;
+    font-size: 14px;
+}
+
+.section-item textarea {
+    height: 47px;
+    max-width: 450px;
+    min-width: 100%;
+    max-height: 200px;
+    min-height: 47px;
+}
+
+.section-item input::placeholder, .section-item textarea::placeholder {
+    color: var(--dark-grey);
+}
+
+.section-item input:focus, .section-item textarea:focus {
+    outline: none;
+}
+
+.section-item__icon_textarea-btn {
+    opacity: 0;
+    transition: .3s;
+}
+
+.textarea-btn {
+    opacity: 1;
+    transition: .3s;
+}
+
+.textarea-btn:hover {
+    cursor: pointer;
+}
+
+.textarea-field {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    z-index: 1;
+    box-sizing: border-box;
+    max-width: 450px;
+    min-width: 100%;
+    max-height: 150px;
+    min-height: 47px;
+    filter: var(--main-shadow);
+    border: 0;
+    border-radius: 5px;
+    padding: 10px;
+    transition: opacity .3s;
+    left: 0;
+    top: 54px;
+}
+
+.textarea-field.textarea-field_active {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity .3s;
+}
