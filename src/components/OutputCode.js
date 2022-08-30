@@ -9,7 +9,7 @@ export default function OutputCode({sections}) {
     }
 
     function getFieldHtml(field) {
-        if( field.value.trim() === "" )
+        if( field.value.trim() === "" && field.level !== 2 )
             return
 
         // eslint-disable-next-line default-case

@@ -403,6 +403,11 @@ export default function App() {
         setSectionsData({...sectionsData})
     }
 
+    function setSectionsDataFromJson(json){
+        Object.assign(sectionsData, JSON.parse(json))
+        setSectionsData({...sectionsData})
+    }
+
     return (
         <Context.Provider value={{addSectionItem, removeSectionItem, changeSectionItem}}>
             <div>
@@ -412,8 +417,7 @@ export default function App() {
                 <div className="container">
                     <div className="main-grid">
                         <ActionButtons
-                            setSectionsData={setSectionsData}
-                            sectionsData={sectionsData}
+                            setSectionsDataFromJson={setSectionsDataFromJson}
                         />
                         {outputMode ?
                             <OutputCode

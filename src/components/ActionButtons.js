@@ -2,16 +2,13 @@ import "../styles/fileUpload.css"
 import TextareaModal from "./TextareaModal";
 import {useState} from "react";
 
-export default function ActionButtons({setSectionsData, sectionsData}){
+export default function ActionButtons({setSectionsDataFromJson}){
     let [modalIsOpen, setModalIsOpen] = useState(false)
 
     function insertSectionText(modalText) {
         try {
-            let json = JSON.parse(modalText)
-
-            Object.assign(sectionsData, json)
+            setSectionsDataFromJson(modalText)
             setModalIsOpen(false)
-            setSectionsData({...sectionsData})
         } catch (e) {
             alert("Произошла ошибка!")
         }
@@ -23,8 +20,7 @@ export default function ActionButtons({setSectionsData, sectionsData}){
 
         reader.readAsText(file);
         reader.onload = e => {
-            Object.assign(sectionsData, JSON.parse(e.target.result))
-            setSectionsData({...sectionsData})
+            setSectionsDataFromJson(e.target.result)
         };
 
         reader.onerror = function () {
