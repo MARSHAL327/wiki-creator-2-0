@@ -129,6 +129,7 @@ export default function App() {
                 },
             ],
             createdFields: [],
+            sectionIsVisible: false,
         },
         "Доступы в админку": {
             name: "Доступы в админку",
@@ -153,16 +154,19 @@ export default function App() {
                 },
             ],
             createdFields: [],
+            sectionIsVisible: false,
         },
         "Боевые сайты": {
             name: "Боевые сайты",
             fields: serverFields,
             createdFields: [],
+            sectionIsVisible: false,
         },
         "Тестовые сайты": {
             name: "Тестовые сайты",
             fields: serverFields,
             createdFields: [],
+            sectionIsVisible: false,
         },
         "Хостинг": {
             name: "Хостинг",
@@ -183,6 +187,7 @@ export default function App() {
                 },
             ],
             createdFields: [],
+            sectionIsVisible: false,
         },
         "Git": {
             name: "Git",
@@ -203,6 +208,7 @@ export default function App() {
                 },
             ],
             createdFields: [],
+            sectionIsVisible: false,
         },
         "Прочее": {
             name: "Прочее",
@@ -231,6 +237,7 @@ export default function App() {
                 },
             ],
             createdFields: [],
+            sectionIsVisible: false,
         },
     }
 
@@ -349,6 +356,19 @@ export default function App() {
         })
     }
 
+    function getVisibleSectionCount(){
+        return Object.keys(sectionsData).filter(sectionName => sectionsData[sectionName].sectionIsVisible).length
+    }
+
+    function toggleSectionVisible(sectionName, sectionIsVisible = true){
+        sectionsData[sectionName].sectionIsVisible = sectionIsVisible
+        sectionsData[sectionName].createdFields = []
+
+        setSectionsData({
+            ...sectionsData,
+        })
+    }
+
     function addSectionItem(section) {
         let newSectionItem = {
             id: Date.now(),
@@ -443,6 +463,7 @@ export default function App() {
 
         for (let key in sectionsData) {
             sectionsData[key].createdFields = [];
+            sectionsData[key].sectionIsVisible = false
         }
 
         setSectionsData({...sectionsData})
@@ -456,7 +477,7 @@ export default function App() {
     }
 
     return (
-        <Context.Provider value={{addSectionItem, removeSectionItem, changeSectionItem}}>
+        <Context.Provider value={{addSectionItem, removeSectionItem, changeSectionItem, toggleSectionVisible, getVisibleSectionCount}}>
             <div>
                 <Header
                     deleteAll={deleteAll}

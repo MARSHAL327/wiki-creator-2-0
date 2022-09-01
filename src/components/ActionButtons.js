@@ -1,10 +1,14 @@
 import "../styles/fileUpload.css"
 import TextareaModal from "./TextareaModal";
-import {useState} from "react";
+import {useContext, useState} from "react";
 import AddSection from "./AddSection";
+import Context from "../context";
 
 export default function ActionButtons({setSectionsDataFromJson, sections}){
+    const {getVisibleSectionCount} = useContext(Context)
     let [modalIsOpen, setModalIsOpen] = useState(false)
+    let visibleSectionCount = getVisibleSectionCount()
+    console.log(visibleSectionCount > 1)
 
     function insertSectionText(modalText) {
         try {
@@ -43,9 +47,13 @@ export default function ActionButtons({setSectionsDataFromJson, sections}){
                 setModalIsOpen={setModalIsOpen}
                 insertSectionText={insertSectionText}
             />
-            <AddSection
-                sections={sections}
-            />
+            {
+                visibleSectionCount > 0 && visibleSectionCount < Object.keys(sections).length &&
+                <AddSection
+                    sections={sections}
+                />
+            }
+
         </div>
     )
 }

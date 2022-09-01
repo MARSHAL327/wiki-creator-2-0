@@ -305,7 +305,7 @@ code {
     cursor: text;
 }
 
-.sections__control-btns{
+.sections__sub-item__control-btns{
     visibility: hidden;
     opacity: 0;
     position: absolute;
@@ -316,18 +316,18 @@ code {
     height: 100%;
 }
 
-.sections__sub-item:hover .sections__control-btns{
+.sections__sub-item:hover .sections__sub-item__control-btns{
     visibility: visible;
     opacity: 1;
     transition: .3s;
 }
 
-.sections__add{
+.sections__control-btns{
     visibility: hidden;
     opacity: 0;
 }
 
-.sections__title:hover .sections__add{
+.sections__title:hover .sections__control-btns{
     visibility: visible;
     opacity: 1;
     transition: .3s;
@@ -364,4 +364,31 @@ code {
 .sections__sub-item textarea:focus{
     outline: none;
     border: 1px solid #000;
+}
+
+.add-section__dropdown{
+    visibility: hidden;
+    opacity: 0;
+    filter: var(--main-shadow);
+    border-radius: 10px;
+    transform: translateY(30px);
+    background-color: #fff;
+    padding: 10px 0;
+    transition: .3s;
+}
+
+.add-section__dropdown__item{
+    padding: 10px 15px;
+}
+
+.add-section__dropdown__item:hover{
+    cursor: pointer;
+    background-color: #eee;
+}
+
+.add-section__dropdown.active{
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+    transition: .3s;
 }

@@ -1,23 +1,16 @@
 import {useContext} from "react";
 import Context from "../context";
+import AddSection from "./AddSection";
 
 export default function WorkSpace20({sections}) {
-    const {addSectionItem, removeSectionItem, changeSectionItem} = useContext(Context)
+    const {addSectionItem, removeSectionItem, changeSectionItem, getVisibleSectionCount, toggleSectionVisible} = useContext(Context)
     const styles = {
         blockStyles: {
             whiteSpace: "pre-line",
             margin: "16px 0"
         }
     }
-
-    // function fieldValuesIsChanged(fields) {
-    //     for (let field of fields) {
-    //         if (field.value.trim() !== "" && field.value.trim() !== field.defaultValue)
-    //             return true
-    //     }
-    //
-    //     return false
-    // }
+    let visibleSectionCount = getVisibleSectionCount()
 
     function getFieldHtml(field) {
         // eslint-disable-next-line default-case
@@ -67,7 +60,6 @@ export default function WorkSpace20({sections}) {
                     </p>
                 )
             case "comment":
-                console.log(field.value)
                 return (
                     <i className={"content-editable"}>
                         {field.value.trim() && <b>Комментарий:&nbsp;</b>}
@@ -95,18 +87,22 @@ export default function WorkSpace20({sections}) {
     return (
         <div className="white-block sections" id={"html-code"}>
             {Object.keys(sections).map(sectionName => {
+                if( sections[sectionName].sectionIsVisible === false ) return false
+
                 return (
-                    <div className={"sections__item"} key={sectionName}>
+                     <div className={"sections__item"} key={sectionName}>
                         <div className={"sections__title"}>
                             <h1 style={sections[sectionName].styles}>{sectionName}</h1>
-                            <i className="fi fi-rr-plus-small cube-btn cube-btn_green sections__add"
+                            <i className="fi fi-rr-plus-small cube-btn cube-btn_green sections__control-btns"
                                onClick={addSectionItem.bind(null, sections[sectionName])}></i>
+                            <i className="fi fi-rr-minus-small cube-btn cube-btn_red sections__control-btns"
+                               onClick={toggleSectionVisible.bind(null, sectionName, false)}></i>
                         </div>
                         {
                             sections[sectionName].createdFields.map(createdField => {
                                 return (
                                     <div className={"sections__sub-item"} key={createdField.id}>
-                                        <div className="sections__control-btns">
+                                        <div className="sections__sub-item__control-btns">
                                             <i className="fi fi-rr-minus-small cube-btn cube-btn_red sections__sub-item__delete"
                                                onClick={removeSectionItem.bind(null, sections[sectionName], createdField.id)}
                                             ></i>
@@ -122,6 +118,12 @@ export default function WorkSpace20({sections}) {
                     </div>
                 )
             })}
+
+            { visibleSectionCount === 0 &&
+                <AddSection
+                    sections={sections}
+                />
+            }
         </div>
     )
 }
