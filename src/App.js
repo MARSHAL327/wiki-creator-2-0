@@ -1,10 +1,11 @@
 import {useEffect, useState} from "react";
 import Header from "./components/Header";
-import WorkSpace from "./components/WorkSpace";
+// import WorkSpace from "./components/WorkSpace";
 import ActionButtons from "./components/ActionButtons";
 import Context from "./context";
 import OutputButtons from "./components/OutputButtons";
 import OutputCode from "./components/OutputCode";
+import WorkSpace20 from "./components/WorkSpace20";
 
 
 export default function App() {
@@ -35,7 +36,8 @@ export default function App() {
                     type: "select",
                     selectValues: ["SFTP", "FTP"],
                     value: "SFTP",
-                    defaultValue: "SFTP"
+                    defaultValue: "SFTP",
+                    showFieldName: true,
                 },
                 {
                     name: "IP сервера",
@@ -369,12 +371,55 @@ export default function App() {
         })
     }
 
-    function changeSectionItem(event, field) {
-        field.value = event.target.value
+    function changeSectionItem(event, field, isTextarea = false) {
+        if( isTextarea ){
+            field.value = event.currentTarget.value
+        } else {
+            field.value = event.currentTarget.textContent
+            setCursorPosition(event.currentTarget)
+        }
+
 
         setSectionsData({
             ...sectionsData,
         })
+    }
+
+    function setCursorPosition(element) {
+        let pos = getCaretCharacterOffsetWithin(element)
+        // let tag = document.querySelector(element);
+        let setpos = document.createRange();
+        let set = window.getSelection();
+
+        setpos.setStart(element, pos);
+        setpos.collapse(true);
+        set.removeAllRanges();
+        set.addRange(setpos);
+        // tag.focus();
+    }
+
+    function getCaretCharacterOffsetWithin(element) {
+        let caretOffset = 0;
+        let doc = element.ownerDocument || element.document;
+        let win = doc.defaultView || doc.parentWindow;
+        let sel;
+        if (typeof win.getSelection != "undefined") {
+            sel = win.getSelection();
+            if (sel.rangeCount > 0) {
+                let range = win.getSelection().getRangeAt(0);
+                let preCaretRange = range.cloneRange();
+                preCaretRange.selectNodeContents(element);
+                preCaretRange.setEnd(range.endContainer, range.endOffset);
+                caretOffset = preCaretRange.toString().length;
+            }
+        } else if ( (sel = doc.selection) && sel.type !== "Control") {
+            let textRange = sel.createRange();
+            let preCaretTextRange = doc.body.createTextRange();
+            preCaretTextRange.moveToElementText(element);
+            preCaretTextRange.setEndPoint("EndToEnd", textRange);
+            caretOffset = preCaretTextRange.text.length;
+        }
+        return caretOffset;
     }
 
     function toggleOutputMode() {
@@ -404,6 +449,8 @@ export default function App() {
     }
 
     function setSectionsDataFromJson(json){
+        deleteAll()
+
         Object.assign(sectionsData, JSON.parse(json))
         setSectionsData({...sectionsData})
     }
@@ -418,12 +465,13 @@ export default function App() {
                     <div className="main-grid">
                         <ActionButtons
                             setSectionsDataFromJson={setSectionsDataFromJson}
+                            sections={sectionsData}
                         />
                         {outputMode ?
                             <OutputCode
                                 sections={getFilteredSections(sectionsData)}
                             /> :
-                            <WorkSpace
+                            <WorkSpace20
                                 sections={sectionsData}
                             />
                         }

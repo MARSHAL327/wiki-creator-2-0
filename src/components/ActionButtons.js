@@ -1,8 +1,9 @@
 import "../styles/fileUpload.css"
 import TextareaModal from "./TextareaModal";
 import {useState} from "react";
+import AddSection from "./AddSection";
 
-export default function ActionButtons({setSectionsDataFromJson}){
+export default function ActionButtons({setSectionsDataFromJson, sections}){
     let [modalIsOpen, setModalIsOpen] = useState(false)
 
     function insertSectionText(modalText) {
@@ -41,6 +42,9 @@ export default function ActionButtons({setSectionsDataFromJson}){
                 modalIsOpen={modalIsOpen}
                 setModalIsOpen={setModalIsOpen}
                 insertSectionText={insertSectionText}
+            />
+            <AddSection
+                sections={sections}
             />
         </div>
     )

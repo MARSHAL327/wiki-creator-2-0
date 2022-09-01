@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
 :root {
-    --dark-blue-color: #F01825;
+    --red-color: #F01825;
     --main-shadow: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
     --light-shadow: drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.25));
     --light-grey: #ECEFF3;
@@ -35,18 +35,18 @@ code {
     margin: 0 auto;
 }
 
-.sections {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 20px;
-    overflow: auto;
-    height: 700px;
-    padding: 0 20px;
-}
+/*.sections {*/
+/*    display: grid;*/
+/*    grid-template-columns: repeat(2, 1fr);*/
+/*    grid-gap: 20px;*/
+/*    overflow: auto;*/
+/*    height: 700px;*/
+/*    padding: 0 20px;*/
+/*}*/
 
-section {
-    margin-top: 40px;
-}
+/*section {*/
+/*    margin-top: 40px;*/
+/*}*/
 
 .white-btn {
     width: 100%;
@@ -91,8 +91,8 @@ section {
 
 .btn-dotted:hover, .btn-delete:hover {
     filter: var(--main-shadow);
-    background-color: var(--dark-blue-color);
-    border: 2px solid var(--dark-blue-color);
+    background-color: var(--red-color);
+    border: 2px solid var(--red-color);
     color: #ffffff;
     cursor: pointer;
     transition: .3s;
@@ -136,6 +136,12 @@ section {
     box-sizing: border-box;
     margin-top: 0;
     margin-bottom: 20px;
+}
+
+.btn-dotted_default_hovered{
+    background-color: var(--green-color);
+    border: 2px solid var(--green-color);
+    color: #ffffff;
 }
 
 .grey-hover {
@@ -227,4 +233,135 @@ section {
 
 .radio {
     margin-bottom: 0.4em;
+}
+
+.cube-btn{
+    background-color: #000000;
+    color: #ffffff;
+    border-radius: 7px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    font-size: 20px;
+    align-content: center;
+    align-items: center;
+    transition: .3s;
+}
+
+.cube-btn_green{
+    background-color: var(--green-color);
+}
+
+.cube-btn_red{
+    background-color: var(--red-color);
+}
+
+.cube-btn:hover{
+    filter: var(--main-shadow);
+    cursor: pointer;
+    transition: .3s;
+}
+
+.sections__title{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.sections__sub-item{
+    position: relative;
+}
+
+.sections__sub-item:after{
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: calc(100% + 20px);
+    height: calc(100% + 20px);
+    border-radius: 10px;
+    outline: 0 solid #e05f67;
+    visibility: hidden;
+    z-index: -1;
+}
+
+.sections__sub-item:hover:after{
+    visibility: visible;
+    outline-width: 2px;
+}
+
+[contentEditable]:focus{
+    outline: none;
+}
+
+[contentEditable]:empty:after{
+    content: attr(placeholder);
+    color: rgb(159, 159, 159);
+    font-weight: normal;
+}
+
+[contentEditable]:hover{
+    cursor: text;
+}
+
+.sections__control-btns{
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: -50px;
+    transition: .3s;
+    width: 50px;
+    height: 100%;
+}
+
+.sections__sub-item:hover .sections__control-btns{
+    visibility: visible;
+    opacity: 1;
+    transition: .3s;
+}
+
+.sections__add{
+    visibility: hidden;
+    opacity: 0;
+}
+
+.sections__title:hover .sections__add{
+    visibility: visible;
+    opacity: 1;
+    transition: .3s;
+}
+
+.content-editable{
+    display: flex;
+}
+
+.content-editable [contenteditable]{
+    flex-grow: 1;
+}
+
+.sections{
+    padding-left: 60px;
+}
+
+.sections__sub-item textarea{
+    flex-grow: 1;
+    height: 18px;
+    max-height: 200px;
+    min-height: 18px;
+    border: 0;
+    font-size: 15px;
+    padding: 0;
+}
+
+.sections__sub-item textarea::placeholder{
+    color: rgb(159, 159, 159);
+    font-weight: normal;
+    font-size: 14px;
+}
+
+.sections__sub-item textarea:focus{
+    outline: none;
+    border: 1px solid #000;
 }

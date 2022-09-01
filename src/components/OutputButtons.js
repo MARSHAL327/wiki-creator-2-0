@@ -13,16 +13,10 @@ export default function OutputButtons({sections, toggleOutputMode, outputMode}) 
         let htmlCode = document.getElementById("html-code").outerHTML;
 
         copyText(htmlCode);
-
-        // this.showHtmlPopper = true
-        // setTimeout(() => this.showHtmlPopper = false, 1000);
     }
 
     function copyJson() {
         copyText(JSON.stringify(sections));
-
-        // this.showJsonPopper = true
-        // setTimeout(() => this.showJsonPopper = false, 1000);
     }
 
     return (
