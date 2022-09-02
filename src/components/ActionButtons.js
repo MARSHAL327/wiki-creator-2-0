@@ -8,7 +8,6 @@ export default function ActionButtons({setSectionsDataFromJson, sections}){
     const {getVisibleSectionCount} = useContext(Context)
     let [modalIsOpen, setModalIsOpen] = useState(false)
     let visibleSectionCount = getVisibleSectionCount()
-    console.log(visibleSectionCount > 1)
 
     function insertSectionText(modalText) {
         try {

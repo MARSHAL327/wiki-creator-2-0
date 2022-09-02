@@ -25,7 +25,7 @@
 
 .copy-btn:hover {
     transition: .3s;
-    filter: var(--light-shadow);
+    box-shadow: var(--light-shadow);
     cursor: pointer;
 }
 

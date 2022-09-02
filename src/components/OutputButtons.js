@@ -16,6 +16,7 @@ export default function OutputButtons({sections, toggleOutputMode, outputMode}) 
     }
 
     function copyJson() {
+        console.log(sections)
         copyText(JSON.stringify(sections));
     }
 

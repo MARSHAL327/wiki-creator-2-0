@@ -2,8 +2,8 @@
 
 :root {
     --red-color: #F01825;
-    --main-shadow: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-    --light-shadow: drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.25));
+    --main-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.3);;
+    --light-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
     --light-grey: #ECEFF3;
     --dark-grey: #B0BCCC;
     --green-color: #42b983;
@@ -55,7 +55,7 @@ code {
     border-radius: 5px;
     transition: .3s;
     margin-bottom: 10px;
-    filter: var(--light-shadow);
+    box-shadow: var(--light-shadow);
     border: 2px solid #fff;
     font-size: 14px;
     text-align: center;
@@ -90,7 +90,7 @@ code {
 }
 
 .btn-dotted:hover, .btn-delete:hover {
-    filter: var(--main-shadow);
+    box-shadow: var(--main-shadow);
     background-color: var(--red-color);
     border: 2px solid var(--red-color);
     color: #ffffff;
@@ -107,12 +107,12 @@ code {
     max-height: 750px;
     box-sizing: border-box;
     background-color: #fff;
-    filter: var(--light-shadow);
+    box-shadow: var(--main-shadow);
     border-radius: 10px;
     padding: 40px;
 }
 
-.code-space{
+.code-space {
     height: 100%;
     overflow: auto;
 }
@@ -138,7 +138,7 @@ code {
     margin-bottom: 20px;
 }
 
-.btn-dotted_default_hovered{
+.btn-dotted_default_hovered {
     background-color: var(--green-color);
     border: 2px solid var(--green-color);
     color: #ffffff;
@@ -178,14 +178,14 @@ code {
 }
 
 /* для элемента label связанного с .custom-radio */
-.custom-radio+label {
+.custom-radio + label {
     display: inline-flex;
     align-items: center;
     user-select: none;
 }
 
 /* создание в label псевдоэлемента  before со следующими стилями */
-.custom-radio+label::before {
+.custom-radio + label::before {
     content: '';
     display: inline-block;
     width: 1em;
@@ -201,25 +201,25 @@ code {
 }
 
 /* стили при наведении курсора на радио */
-.custom-radio:not(:disabled):not(:checked)+label:hover::before {
+.custom-radio:not(:disabled):not(:checked) + label:hover::before {
     border-color: var(--pale-green-color);
 }
 
 /* стили для активной радиокнопки (при нажатии на неё) */
-.custom-radio:not(:disabled):active+label::before {
+.custom-radio:not(:disabled):active + label::before {
     background-color: var(--pale-green-color);
     border-color: var(--pale-green-color);
     transition: .5s;
 }
 
 /* стили для радиокнопки, находящейся в фокусе и не находящейся в состоянии checked */
-.custom-radio:focus:not(:checked)+label::before {
+.custom-radio:focus:not(:checked) + label::before {
     border-color: var(--pale-green-color);
     transition: .5s;
 }
 
 /* стили для радиокнопки, находящейся в состоянии checked */
-.custom-radio:checked+label::before {
+.custom-radio:checked + label::before {
     border-color: var(--green-color);
     background-color: var(--green-color);
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
@@ -227,7 +227,7 @@ code {
 }
 
 /* стили для радиокнопки, находящейся в состоянии disabled */
-.custom-radio:disabled+label::before {
+.custom-radio:disabled + label::before {
     background-color: #e9ecef;
 }
 
@@ -235,7 +235,7 @@ code {
     margin-bottom: 0.4em;
 }
 
-.cube-btn{
+.cube-btn {
     background-color: #000000;
     color: #ffffff;
     border-radius: 7px;
@@ -249,127 +249,132 @@ code {
     transition: .3s;
 }
 
-.cube-btn_green{
+.cube-btn_default {
+    background-color: #fff;
+    color: #000;
+}
+
+.cube-btn_green {
     background-color: var(--green-color);
 }
 
-.cube-btn_red{
+.cube-btn_red {
     background-color: var(--red-color);
 }
 
-.cube-btn:hover{
-    filter: var(--main-shadow);
+.cube-btn:hover {
+    box-shadow: var(--main-shadow);
     cursor: pointer;
     transition: .3s;
 }
 
-.sections__title{
+.cube-btn_small {
+    width: 20px;
+    height: 20px;
+    font-size: 17px;
+}
+
+.sections__title {
     display: flex;
     align-items: center;
     gap: 20px;
 }
 
-.sections__sub-item{
+.sections__sub-item {
+    display: flex;
     position: relative;
+    background-color: #fff;
 }
 
-.sections__sub-item:after{
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    width: calc(100% + 20px);
-    height: calc(100% + 20px);
-    border-radius: 10px;
-    outline: 0 solid #e05f67;
-    visibility: hidden;
-    z-index: -1;
-}
-
-.sections__sub-item:hover:after{
-    visibility: visible;
-    outline-width: 2px;
-}
-
-[contentEditable]:focus{
+[contentEditable]:focus {
     outline: none;
 }
 
-[contentEditable]:empty:after{
+.sections__sub-item__fields{
+    width: 100%;
+}
+
+[contentEditable]:empty:after {
     content: attr(placeholder);
     color: rgb(159, 159, 159);
     font-weight: normal;
 }
 
-[contentEditable]:hover{
+[contentEditable]:hover {
     cursor: text;
 }
 
 .sections__sub-item__control-btns{
-    visibility: hidden;
-    opacity: 0;
-    position: absolute;
-    top: 0;
-    left: -50px;
-    transition: .3s;
+    display: flex;
+    flex-direction: column;
     width: 50px;
     height: 100%;
+    position: absolute;
+    top: 20px;
+    left: -45px;
+    gap: 10px;
+    visibility: hidden;
+    opacity: 0;
+    transition: .3s;
+    transform: translateX(-10px);
 }
 
-.sections__sub-item:hover .sections__sub-item__control-btns{
+.sections__sub-item:hover .sections__sub-item__control-btns {
     visibility: visible;
     opacity: 1;
+    transform: translateX(0);
     transition: .3s;
 }
 
-.sections__control-btns{
+.sections__control-btns {
     visibility: hidden;
     opacity: 0;
 }
 
-.sections__title:hover .sections__control-btns{
+.sections__title:hover .sections__control-btns {
     visibility: visible;
     opacity: 1;
     transition: .3s;
 }
 
-.content-editable{
+.content-editable {
     display: flex;
 }
 
-.content-editable [contenteditable]{
+.content-editable [contenteditable] {
     flex-grow: 1;
 }
 
-.sections{
+.sections {
     padding-left: 60px;
 }
 
-.sections__sub-item textarea{
+.sections__sub-item textarea {
     flex-grow: 1;
     height: 18px;
     max-height: 200px;
     min-height: 18px;
     border: 0;
     font-size: 15px;
+    font-style: italic;
     padding: 0;
 }
 
-.sections__sub-item textarea::placeholder{
+.sections__sub-item textarea::placeholder {
     color: rgb(159, 159, 159);
     font-weight: normal;
     font-size: 14px;
 }
 
-.sections__sub-item textarea:focus{
+.sections__sub-item textarea:focus {
     outline: none;
     border: 1px solid #000;
 }
 
-.add-section__dropdown{
+.add-section__dropdown {
     visibility: hidden;
     opacity: 0;
-    filter: var(--main-shadow);
+    box-shadow: var(--main-shadow);
     border-radius: 10px;
     transform: translateY(30px);
     background-color: #fff;
@@ -377,18 +382,22 @@ code {
     transition: .3s;
 }
 
-.add-section__dropdown__item{
+.add-section__dropdown__item {
     padding: 10px 15px;
 }
 
-.add-section__dropdown__item:hover{
+.add-section__dropdown__item:hover {
     cursor: pointer;
     background-color: #eee;
 }
 
-.add-section__dropdown.active{
+.add-section__dropdown.active {
     visibility: visible;
     opacity: 1;
     transform: translateY(0);
     transition: .3s;
+}
+
+.move-btn:hover {
+    cursor: move;
 }

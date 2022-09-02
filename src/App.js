@@ -135,12 +135,12 @@ export default function App() {
             name: "Доступы в админку",
             fields: [
                 {
-                    name: "Сайт",
-                    type: "link"
-                },
-                {
                     name: "Название пользователя",
                     type: "h2"
+                },
+                {
+                    name: "Сайт",
+                    type: "link"
                 },
                 {
                     name: "Логин",
@@ -383,8 +383,8 @@ export default function App() {
         })
     }
 
-    function removeSectionItem(section, itemId) {
-        section.createdFields = section.createdFields.filter(item => item.id !== itemId)
+    function removeSectionItem(sectionName, itemId) {
+        sectionsData[sectionName].createdFields = sectionsData[sectionName].createdFields.filter(item => item.id !== itemId)
 
         setSectionsData({
             ...sectionsData,
@@ -398,7 +398,6 @@ export default function App() {
             field.value = event.currentTarget.textContent
             setCursorPosition(event.currentTarget)
         }
-
 
         setSectionsData({
             ...sectionsData,
@@ -470,9 +469,16 @@ export default function App() {
     }
 
     function setSectionsDataFromJson(json){
+        let parsedJson = JSON.parse(json)
+
         deleteAll()
 
-        Object.assign(sectionsData, JSON.parse(json))
+        for (let sectionName in parsedJson) {
+            if( parsedJson[sectionName].sectionIsVisible === undefined )
+                parsedJson[sectionName].sectionIsVisible = parsedJson[sectionName].createdFields.length > 0
+        }
+
+        Object.assign(sectionsData, parsedJson)
         setSectionsData({...sectionsData})
     }
 
@@ -494,11 +500,12 @@ export default function App() {
                             /> :
                             <WorkSpace20
                                 sections={sectionsData}
+                                setSectionsData={setSectionsData}
                             />
                         }
 
                         <OutputButtons
-                            sections={getFilteredSections(sectionsData)}
+                            sections={sectionsData}
                             outputMode={outputMode}
                             toggleOutputMode={toggleOutputMode}
                         />
