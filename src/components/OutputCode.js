@@ -20,7 +20,7 @@ export default function OutputCode({sections}) {
                 return (
                     <p style={{whiteSpace: "pre-line"}}>
                         {
-                            ((field.showFieldName && field.value.trim()) || field.type === "select" ) &&
+                            ((field.showName && field.value.trim()) || field.type === "select" ) &&
                             <span style={{fontWeight: "bold"}}>{field.name}: </span>
                         }
                         {field.value}

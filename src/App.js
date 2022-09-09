@@ -10,6 +10,7 @@ import WorkSpace20 from "./components/WorkSpace20";
 
 export default function App() {
     // Заполняем основные данные
+    const dataVersion = "2.0"
     const serverFields = [
         {
             name: "Название сайта (обязательно для заполнения)",
@@ -22,7 +23,7 @@ export default function App() {
             level: 1,
         },
         {
-            name: "Комментарий",
+            name: "Комментарий к сайту",
             type: "comment"
         },
         {
@@ -37,30 +38,30 @@ export default function App() {
                     selectValues: ["SFTP", "FTP"],
                     value: "SFTP",
                     defaultValue: "SFTP",
-                    showFieldName: true,
+                    showName: true,
                 },
                 {
                     name: "IP сервера",
                     type: "text",
-                    showFieldName: true,
+                    showName: true,
                     value: "",
                 },
                 {
                     name: "Логин",
                     type: "text",
-                    showFieldName: true,
+                    showName: true,
                     value: "",
                 },
                 {
                     name: "Пароль",
                     type: "password",
-                    showFieldName: true,
+                    showName: true,
                     value: "",
                 },
                 {
                     name: "Порт",
                     type: "text",
-                    showFieldName: true,
+                    showName: true,
                     defaultValue: "22",
                     value: "22",
                 },
@@ -74,19 +75,19 @@ export default function App() {
                 {
                     name: "Имя БД",
                     type: "text",
-                    showFieldName: true,
+                    showName: true,
                     value: ""
                 },
                 {
                     name: "Логин",
                     type: "text",
-                    showFieldName: true,
+                    showName: true,
                     value: ""
                 },
                 {
                     name: "Пароль",
                     type: "password",
-                    showFieldName: true,
+                    showName: true,
                     value: ""
                 },
                 {
@@ -94,7 +95,7 @@ export default function App() {
                     type: "password",
                     defaultValue: "localhost",
                     value: "localhost",
-                    showFieldName: true,
+                    showName: true,
                 },
             ]
         },
@@ -106,7 +107,7 @@ export default function App() {
                 {
                     name: "Ветка",
                     type: "text",
-                    showFieldName: true,
+                    showName: true,
                     value: ""
                 },
             ]
@@ -145,12 +146,12 @@ export default function App() {
                 {
                     name: "Логин",
                     type: "text",
-                    showFieldName: true
+                    showName: true
                 },
                 {
                     name: "Пароль",
                     type: "password",
-                    showFieldName: true
+                    showName: true
                 },
             ],
             createdFields: [],
@@ -172,18 +173,22 @@ export default function App() {
             name: "Хостинг",
             fields: [
                 {
+                    name: "Заголовок",
+                    type: "h2"
+                },
+                {
                     name: "Ссылка на хостинг",
                     type: "link"
                 },
                 {
                     name: "Логин",
                     type: "text",
-                    showFieldName: true
+                    showName: true
                 },
                 {
                     name: "Пароль",
                     type: "password",
-                    showFieldName: true
+                    showName: true
                 },
             ],
             createdFields: [],
@@ -193,18 +198,22 @@ export default function App() {
             name: "Git",
             fields: [
                 {
+                    name: "Заголовок",
+                    type: "h2"
+                },
+                {
                     name: "Ссылка на git",
                     type: "link"
                 },
                 {
                     name: "Логин",
                     type: "text",
-                    showFieldName: true
+                    showName: true
                 },
                 {
                     name: "Пароль",
                     type: "password",
-                    showFieldName: true
+                    showName: true
                 },
             ],
             createdFields: [],
@@ -228,12 +237,12 @@ export default function App() {
                 {
                     name: "Логин",
                     type: "text",
-                    showFieldName: true
+                    showName: true
                 },
                 {
                     name: "Пароль",
                     type: "password",
-                    showFieldName: true
+                    showName: true
                 },
             ],
             createdFields: [],
@@ -241,15 +250,21 @@ export default function App() {
         },
     }
 
-    let localData = localStorage.getItem("sectionsData") !== null ? JSON.parse(localStorage.getItem("sectionsData")) : {};
+    let localData = localStorage.getItem("sectionsData") !== 'null' ? JSON.parse(localStorage.getItem("sectionsData")).sections : {};
     Object.assign(defaultSectionData, localData)
 
     let [sectionsData, setSectionsData] = useState(defaultSectionData)
+    // let [caretOffset, setCaretOffset] = useState(0)
 
     // Следим за изменением данных
     useEffect(() => {
-        localStorage.setItem('sectionsData', JSON.stringify(sectionsData))
-    },[sectionsData])
+        let sectionsWithVersion = {
+            version: dataVersion,
+            sections: sectionsData
+        }
+
+        localStorage.setItem('sectionsData', JSON.stringify(sectionsWithVersion))
+    }, [sectionsData])
 
     // Остальные переменные
     let [outputMode, setOutputMode] = useState(false)
@@ -356,11 +371,11 @@ export default function App() {
         })
     }
 
-    function getVisibleSectionCount(){
+    function getVisibleSectionCount() {
         return Object.keys(sectionsData).filter(sectionName => sectionsData[sectionName].sectionIsVisible).length
     }
 
-    function toggleSectionVisible(sectionName, sectionIsVisible = true){
+    function toggleSectionVisible(sectionName, sectionIsVisible = true) {
         sectionsData[sectionName].sectionIsVisible = sectionIsVisible
         sectionsData[sectionName].createdFields = []
 
@@ -391,54 +406,14 @@ export default function App() {
         })
     }
 
-    function changeSectionItem(event, field, isTextarea = false) {
-        if( isTextarea ){
-            field.value = event.currentTarget.value
-        } else {
-            field.value = event.currentTarget.textContent
-            setCursorPosition(event.currentTarget)
-        }
+    function changeSectionItem(event, field) {
+        event.preventDefault();
+
+        field.value = event.currentTarget.innerHTML
 
         setSectionsData({
             ...sectionsData,
         })
-    }
-
-    function setCursorPosition(element) {
-        let pos = getCaretCharacterOffsetWithin(element)
-        // let tag = document.querySelector(element);
-        let setpos = document.createRange();
-        let set = window.getSelection();
-
-        setpos.setStart(element, pos);
-        setpos.collapse(true);
-        set.removeAllRanges();
-        set.addRange(setpos);
-        // tag.focus();
-    }
-
-    function getCaretCharacterOffsetWithin(element) {
-        let caretOffset = 0;
-        let doc = element.ownerDocument || element.document;
-        let win = doc.defaultView || doc.parentWindow;
-        let sel;
-        if (typeof win.getSelection != "undefined") {
-            sel = win.getSelection();
-            if (sel.rangeCount > 0) {
-                let range = win.getSelection().getRangeAt(0);
-                let preCaretRange = range.cloneRange();
-                preCaretRange.selectNodeContents(element);
-                preCaretRange.setEnd(range.endContainer, range.endOffset);
-                caretOffset = preCaretRange.toString().length;
-            }
-        } else if ( (sel = doc.selection) && sel.type !== "Control") {
-            let textRange = sel.createRange();
-            let preCaretTextRange = doc.body.createTextRange();
-            preCaretTextRange.moveToElementText(element);
-            preCaretTextRange.setEndPoint("EndToEnd", textRange);
-            caretOffset = preCaretTextRange.text.length;
-        }
-        return caretOffset;
     }
 
     function toggleOutputMode() {
@@ -468,22 +443,150 @@ export default function App() {
         setSectionsData({...sectionsData})
     }
 
-    function setSectionsDataFromJson(json){
+    const reorder = (list, startIndex, endIndex) => {
+        const result = Array.from(list);
+        const [removed] = result.splice(startIndex, 1);
+        result.splice(endIndex, 0, removed);
+
+        return result;
+    };
+
+    function convertToNewVersion(parsedJson, version = "1.0") {
+        let sections
+
+        switch (version) {
+            case "1.0":
+                let sameSections = ["Доступы в админку", "Правила работы", "Прочее", "Хостинг", "Git"]
+                let defaultObject = {}
+                sections = parsedJson
+
+                for (let sectionName in sections) {
+
+                    if (sameSections.includes(sectionName)) {
+                        // eslint-disable-next-line
+                        sections[sectionName].createdFields = sections[sectionName].createdFields.map((createdField) => {
+                            let id = createdField.id
+                            let newCreatedFields = []
+                            let lastIdx = -1
+
+                            Object.keys(createdField).forEach((fieldName, idx) => {
+                                if (fieldName === "id") return
+                                let type = "text"
+                                let showName = false
+
+                                lastIdx = idx
+
+                                defaultSectionData[sectionName].fields.forEach(item => {
+                                    if (item.name === fieldName) {
+                                        type = item.type
+                                        showName = item.showName
+                                    }
+                                })
+
+                                let newField = {
+                                    name: fieldName,
+                                    type: type,
+                                    value: createdField[fieldName].value,
+                                    id: Number(createdField.id) + idx,
+                                    showName: showName
+                                }
+
+                                if (fieldName === "Комментарий")
+                                    Object.assign(newField, commentObject)
+
+                                newCreatedFields.push(newField)
+                            })
+
+                            if (sectionName === "Хостинг" || sectionName === "Git") {
+                                newCreatedFields.push({
+                                    name: "Заголовок",
+                                    type: "h2",
+                                    value: "",
+                                    id: Number(id) + lastIdx + 1
+                                })
+
+                                newCreatedFields = reorder(newCreatedFields, 4, 0)
+                            }
+
+                            if (sectionName === "Доступы в админку") {
+                                newCreatedFields = reorder(newCreatedFields, 0, 1)
+                            }
+
+                            return {
+                                id: id,
+                                fields: newCreatedFields
+                            }
+                        })
+
+                        defaultObject = {
+                            name: sectionName,
+                            fields: sections[sectionName].fields,
+                            createdFields: sections[sectionName].createdFields,
+                            sectionIsVisible: sections[sectionName].createdFields.length > 0,
+                        }
+
+                        if (sectionName === "Правила работы") defaultObject.styles = {color: "rgb(255, 27, 40)"}
+
+                        sections[sectionName] = defaultObject
+                    } else {
+                        delete sections[sectionName]
+                    }
+                }
+
+                // console.log(sections)
+                break;
+            default:
+                sections = {}
+                break;
+        }
+
+        return sections
+    }
+
+    function setSectionsDataFromJson(json) {
         let parsedJson = JSON.parse(json)
+        let sections = parsedJson.sections
+
+
+        if (sections === undefined || parsedJson.version !== dataVersion)
+            sections = convertToNewVersion(parsedJson, parsedJson.version)
 
         deleteAll()
 
-        for (let sectionName in parsedJson) {
-            if( parsedJson[sectionName].sectionIsVisible === undefined )
-                parsedJson[sectionName].sectionIsVisible = parsedJson[sectionName].createdFields.length > 0
+        for (let sectionName in sections) {
+            if (sections[sectionName].sectionIsVisible === undefined)
+                sections[sectionName].sectionIsVisible = sections[sectionName].createdFields.length > 0
         }
 
-        Object.assign(sectionsData, parsedJson)
+        Object.assign(sectionsData, sections)
         setSectionsData({...sectionsData})
     }
 
+    function setEndOfContenteditable(element) {
+        let setpos = document.createRange();
+        let set = window.getSelection();
+
+        try {
+            set.removeAllRanges();
+            setpos.setStart(element.firstChild, element.firstChild.length);
+            setpos.collapse(false);
+            set.addRange(setpos);
+        } catch (err){
+            console.error(err)
+        }
+
+    }
+
     return (
-        <Context.Provider value={{addSectionItem, removeSectionItem, changeSectionItem, toggleSectionVisible, getVisibleSectionCount}}>
+        <Context.Provider value={{
+            addSectionItem,
+            removeSectionItem,
+            changeSectionItem,
+            toggleSectionVisible,
+            getVisibleSectionCount,
+            reorder,
+            setEndOfContenteditable
+        }}>
             <div>
                 <Header
                     deleteAll={deleteAll}
@@ -505,6 +608,7 @@ export default function App() {
                         }
 
                         <OutputButtons
+                            dataVersion={dataVersion}
                             sections={sectionsData}
                             outputMode={outputMode}
                             toggleOutputMode={toggleOutputMode}

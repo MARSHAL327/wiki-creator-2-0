@@ -1,6 +1,6 @@
 import "../styles/outputButtons.css"
 
-export default function OutputButtons({sections, toggleOutputMode, outputMode}) {
+export default function OutputButtons({sections, toggleOutputMode, outputMode, dataVersion}) {
     function copyText(text) {
         try {
             navigator.clipboard.writeText(text)
@@ -16,8 +16,12 @@ export default function OutputButtons({sections, toggleOutputMode, outputMode}) 
     }
 
     function copyJson() {
-        console.log(sections)
-        copyText(JSON.stringify(sections));
+        let sectionsWithVersion = {
+            "version": dataVersion,
+            sections: sections
+        }
+
+        copyText(JSON.stringify(sectionsWithVersion));
     }
 
     return (

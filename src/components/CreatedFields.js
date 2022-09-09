@@ -1,9 +1,9 @@
 import {Draggable} from "react-beautiful-dnd";
-import {useContext} from "react";
+import {useContext, useRef} from "react";
 import Context from "../context";
 
 export default function CreatedFields({createdField, index, sectionName}) {
-    const {removeSectionItem, changeSectionItem} = useContext(Context)
+    const {removeSectionItem, changeSectionItem, setEndOfContenteditable} = useContext(Context)
     const styles = {
         blockStyles: {
             whiteSpace: "pre-line",
@@ -15,6 +15,10 @@ export default function CreatedFields({createdField, index, sectionName}) {
     }
 
     function getFieldHtml(field) {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        let fieldRef = useRef(field.value)
+        let fieldValue = fieldRef.current
+
         // eslint-disable-next-line default-case
         switch (field.type) {
             case "text":
@@ -23,18 +27,22 @@ export default function CreatedFields({createdField, index, sectionName}) {
                 return (
                     <div style={styles.blockStyles} className={"content-editable"}>
                         {
-                            (field.showFieldName && field.value.trim()) &&
+                            (field.showName && field.value.trim()) &&
                             <span style={{fontWeight: "bold"}}>{field.name}:&nbsp;</span>
                         }
                         <div
                             contentEditable
                             suppressContentEditableWarning={true}
+                            dangerouslySetInnerHTML={{ __html: fieldValue }}
                             onInput={(event) => {
                                 changeSectionItem(event, field)
                             }}
+                            onPaste={(event) => {
+                                changeSectionItem(event, field)
+                                fieldRef.current = field.value
+                            }}
                             placeholder={field.name}
                         >
-                            {field.value}
                         </div>
                     </div>
                 )
@@ -42,13 +50,19 @@ export default function CreatedFields({createdField, index, sectionName}) {
                 return (
                     <h2 contentEditable
                         suppressContentEditableWarning={true}
+                        dangerouslySetInnerHTML={{ __html: fieldValue }}
                         onInput={(event) => {
+                            if( event.nativeEvent.inputType === 'insertFromPaste' ){
+                                event.currentTarget.innerHTML = event.currentTarget.innerHTML.replace(/<(.|\n)*?>/g, '')
+                                fieldRef.current = event.currentTarget.innerHTML
+                                setEndOfContenteditable(event.currentTarget)
+                            }
+
                             changeSectionItem(event, field)
                         }}
                         style={{backgroundColor: "#0E1025", color: "#fff", padding: "10px"}}
                         placeholder={field.name}
                     >
-                        {field.value}
                     </h2>
                 )
             case "h3":
@@ -60,21 +74,36 @@ export default function CreatedFields({createdField, index, sectionName}) {
                         suppressContentEditableWarning={true}
                         className={"content-editable"}
                         placeholder={field.name}
+                        dangerouslySetInnerHTML={{ __html: fieldValue }}
+                        onInput={(event) => {
+                            changeSectionItem(event, field)
+                        }}
+                        onPaste={(event) => {
+                            changeSectionItem(event, field)
+                            fieldRef.current = field.value
+                        }}
                     >
-                        {field.value}
                     </div>
                 )
             case "comment":
                 return (
                     <i className={"content-editable"}>
-                        {field.value.trim() && <b>Комментарий:&nbsp;</b>}
-                        <textarea
-                            placeholder={field.name}
-                            defaultValue={field.value}
-                            onChange={(event) => {
-                                changeSectionItem(event, field, true)
+                        {field.value && <b>Комментарий:&nbsp;</b>}
+                        <div
+                            style={{whiteSpace: "pre-line"}}
+                            contentEditable
+                            suppressContentEditableWarning={true}
+                            dangerouslySetInnerHTML={{ __html: fieldValue }}
+                            onInput={(event) => {
+                                changeSectionItem(event, field)
                             }}
-                        ></textarea>
+                            onPaste={(event) => {
+                                changeSectionItem(event, field)
+                                fieldRef.current = field.value
+                            }}
+                            placeholder={field.name}
+                        >
+                        </div>
                     </i>
                 )
         }

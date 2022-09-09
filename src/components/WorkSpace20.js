@@ -8,17 +8,10 @@ export default function WorkSpace20({sections, setSectionsData}) {
     const {
         addSectionItem,
         getVisibleSectionCount,
-        toggleSectionVisible
+        toggleSectionVisible,
+        reorder
     } = useContext(Context)
     let visibleSectionCount = getVisibleSectionCount()
-
-    const reorder = (list, startIndex, endIndex) => {
-        const result = Array.from(list);
-        const [removed] = result.splice(startIndex, 1);
-        result.splice(endIndex, 0, removed);
-
-        return result;
-    };
 
     function onDragEnd(result) {
         if (!result.destination) {
@@ -41,7 +34,7 @@ export default function WorkSpace20({sections, setSectionsData}) {
     return (
         <DragDropContext onDragEnd={onDragEnd}>
             <div className="white-block sections" id={"html-code"}>
-                {Object.keys(sections).map((sectionName, sectionId) => {
+                {Object.keys(sections).map((sectionName) => {
                     if (sections[sectionName].sectionIsVisible === false) return false
 
                     return (
