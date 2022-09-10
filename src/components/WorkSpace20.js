@@ -41,7 +41,11 @@ export default function WorkSpace20({sections, setSectionsData, outputMode}) {
                     return (
                         <div className={"sections__item"} key={sectionName}>
                             <div className={"sections__title"}>
-                                <h1 style={sections[sectionName].styles}>{sectionName}</h1>
+                                <h1>
+                                    <span style={sections[sectionName].styles ?? {color: "rgb(0, 166, 80)"}}>
+                                        {sectionName}
+                                    </span>
+                                </h1>
                                 {
                                     !outputMode && (
                                         <>
@@ -121,6 +125,16 @@ export default function WorkSpace20({sections, setSectionsData, outputMode}) {
                         sections={sections}
                     />
                 }
+
+                { outputMode &&
+                    <details>
+                        <summary>
+                            <h1 style={{ color: "rgb(0, 166, 80)", fontSize: "24px", fontWeight: "bold" }}>JSON вставка</h1>
+                        </summary>
+                        {JSON.stringify(sections)}
+                    </details>
+                }
+
             </div>
         </DragDropContext>
     )

@@ -42,6 +42,7 @@ export default function OutputButtons({sections, toggleOutputMode, outputMode, d
 
     return (
         <div>
+            <div className={"data-title"}>Выходные данные</div>
             <div className="btn-dotted btn-dotted_default" onClick={toggleOutputMode}>
                 {outputMode ? "Редактировать данные" : "Посмотреть итоговый вариант"}
             </div>

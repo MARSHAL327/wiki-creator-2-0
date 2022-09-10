@@ -9,7 +9,8 @@ export default function CreatedFields({createdField, index, sectionName, outputM
     const styles = {
         blockStyles: {
             whiteSpace: "pre-line",
-            margin: "16px 0"
+            margin: "16px 0",
+            display: "flex"
         },
         link: {
             color: "rgb(0, 0, 238)"
@@ -26,13 +27,11 @@ export default function CreatedFields({createdField, index, sectionName, outputM
         let fillFields = field.fields.filter(item => {
             return item.value.trim().length > 0
         })
-        console.log(fillFields)
 
         return fillFields.length > 0
     }
 
     function getFieldHtml(field) {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
         if( outputMode && field.type === "h3" && !h3FieldsFilled(field) ){
             return false
         }
@@ -125,6 +124,7 @@ export default function CreatedFields({createdField, index, sectionName, outputM
                         {...provided.dragHandleProps}
                     >
                         <div className="sections__sub-item__control-btns">
+                            {/*<i className="fi fi-rr-caret-down cube-btn cube-btn_default caret-btn"></i>*/}
                             <i className="fi fi-rr-arrows cube-btn cube-btn_default move-btn"></i>
                             {
                                 !outputMode &&

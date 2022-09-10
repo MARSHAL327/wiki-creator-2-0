@@ -34,6 +34,7 @@ export default function ActionButtons({setSectionsDataFromJson, sections}){
 
     return (
         <div>
+            <div className={"data-title"}>Входные данные</div>
             <div className="btn-dotted btn-dotted_default" onClick={() => {setModalIsOpen(modalIsOpen => !modalIsOpen)}}>
                 Вставить как текст
             </div>
