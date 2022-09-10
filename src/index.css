@@ -300,7 +300,7 @@ code {
     font-weight: normal;
 }
 
-[contentEditable]:hover {
+[contentEditable=true]:hover {
     cursor: text;
 }
 
@@ -400,4 +400,13 @@ code {
 
 .move-btn:hover {
     cursor: move;
+}
+
+.title_h2{
+    background-color: #0E1025;
+    color: #ffffff;
+    padding: 10px;
+    margin: 16px 0;
+    font-size: 24px;
+    font-weight: bold;
 }

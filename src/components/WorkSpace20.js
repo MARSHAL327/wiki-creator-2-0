@@ -4,7 +4,7 @@ import AddSection from "./AddSection";
 import {DragDropContext, Droppable} from "react-beautiful-dnd";
 import CreatedFields from "./CreatedFields";
 
-export default function WorkSpace20({sections, setSectionsData}) {
+export default function WorkSpace20({sections, setSectionsData, outputMode}) {
     const {
         addSectionItem,
         getVisibleSectionCount,
@@ -41,10 +41,17 @@ export default function WorkSpace20({sections, setSectionsData}) {
                         <div className={"sections__item"} key={sectionName}>
                             <div className={"sections__title"}>
                                 <h1 style={sections[sectionName].styles}>{sectionName}</h1>
-                                <i className="fi fi-rr-plus-small cube-btn cube-btn_green sections__control-btns"
-                                   onClick={addSectionItem.bind(null, sections[sectionName])}></i>
-                                <i className="fi fi-rr-minus-small cube-btn cube-btn_red sections__control-btns"
-                                   onClick={toggleSectionVisible.bind(null, sectionName, false)}></i>
+                                {
+                                    !outputMode && (
+                                        <>
+                                            <i className="fi fi-rr-plus-small cube-btn cube-btn_green sections__control-btns"
+                                               onClick={addSectionItem.bind(null, sections[sectionName])}></i>
+                                            <i className="fi fi-rr-minus-small cube-btn cube-btn_red sections__control-btns"
+                                               onClick={toggleSectionVisible.bind(null, sectionName, false)}></i>
+                                        </>
+                                    )
+                                }
+
                             </div>
 
 
@@ -60,6 +67,7 @@ export default function WorkSpace20({sections, setSectionsData}) {
                                                                 createdField={createdField}
                                                                 sectionName={sectionName}
                                                                 index={index}
+                                                                outputMode={outputMode}
                                                             />
                                                         )
                                                     )

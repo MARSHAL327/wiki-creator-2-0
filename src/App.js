@@ -4,7 +4,6 @@ import Header from "./components/Header";
 import ActionButtons from "./components/ActionButtons";
 import Context from "./context";
 import OutputButtons from "./components/OutputButtons";
-import OutputCode from "./components/OutputCode";
 import WorkSpace20 from "./components/WorkSpace20";
 
 
@@ -13,7 +12,7 @@ export default function App() {
     const dataVersion = "2.0"
     const serverFields = [
         {
-            name: "Название сайта (обязательно для заполнения)",
+            name: "Название сайта",
             type: "h2",
             level: 1,
         },
@@ -254,7 +253,6 @@ export default function App() {
     Object.assign(defaultSectionData, localData)
 
     let [sectionsData, setSectionsData] = useState(defaultSectionData)
-    // let [caretOffset, setCaretOffset] = useState(0)
 
     // Следим за изменением данных
     useEffect(() => {
@@ -407,8 +405,6 @@ export default function App() {
     }
 
     function changeSectionItem(event, field) {
-        event.preventDefault();
-
         field.value = event.currentTarget.innerHTML
 
         setSectionsData({
@@ -418,18 +414,6 @@ export default function App() {
 
     function toggleOutputMode() {
         setOutputMode(outputMode => !outputMode)
-    }
-
-    function getFilteredSections(sections) {
-        let filteredSections = {};
-
-        for (let key in sections) {
-            if (sections[key].createdFields.length > 0) {
-                filteredSections[key] = sections[key]
-            }
-        }
-
-        return filteredSections;
     }
 
     function deleteAll() {
@@ -532,8 +516,6 @@ export default function App() {
                         delete sections[sectionName]
                     }
                 }
-
-                // console.log(sections)
                 break;
             default:
                 sections = {}
@@ -562,21 +544,6 @@ export default function App() {
         setSectionsData({...sectionsData})
     }
 
-    function setEndOfContenteditable(element) {
-        let setpos = document.createRange();
-        let set = window.getSelection();
-
-        try {
-            set.removeAllRanges();
-            setpos.setStart(element.firstChild, element.firstChild.length);
-            setpos.collapse(false);
-            set.addRange(setpos);
-        } catch (err){
-            console.error(err)
-        }
-
-    }
-
     return (
         <Context.Provider value={{
             addSectionItem,
@@ -584,8 +551,7 @@ export default function App() {
             changeSectionItem,
             toggleSectionVisible,
             getVisibleSectionCount,
-            reorder,
-            setEndOfContenteditable
+            reorder
         }}>
             <div>
                 <Header
@@ -597,16 +563,11 @@ export default function App() {
                             setSectionsDataFromJson={setSectionsDataFromJson}
                             sections={sectionsData}
                         />
-                        {outputMode ?
-                            <OutputCode
-                                sections={getFilteredSections(sectionsData)}
-                            /> :
-                            <WorkSpace20
-                                sections={sectionsData}
-                                setSectionsData={setSectionsData}
-                            />
-                        }
-
+                        <WorkSpace20
+                            outputMode={outputMode}
+                            sections={sectionsData}
+                            setSectionsData={setSectionsData}
+                        />
                         <OutputButtons
                             dataVersion={dataVersion}
                             sections={sectionsData}

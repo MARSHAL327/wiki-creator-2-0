@@ -1,9 +1,10 @@
 import {Draggable} from "react-beautiful-dnd";
-import {useContext, useRef} from "react";
+import {useContext} from "react";
 import Context from "../context";
+import ContentEditable from "react-contenteditable";
 
-export default function CreatedFields({createdField, index, sectionName}) {
-    const {removeSectionItem, changeSectionItem, setEndOfContenteditable} = useContext(Context)
+export default function CreatedFields({createdField, index, sectionName, outputMode}) {
+    const {removeSectionItem, changeSectionItem} = useContext(Context)
     const styles = {
         blockStyles: {
             whiteSpace: "pre-line",
@@ -14,10 +15,29 @@ export default function CreatedFields({createdField, index, sectionName}) {
         }
     }
 
+    function onPasteHandler(e) {
+        e.preventDefault();
+        let text = e.clipboardData.getData("text/plain");
+        document.execCommand("insertHTML", false, text);
+    }
+
+    function h3FieldsFilled(field){
+        let fillFields = field.fields.filter(item => {
+            return item.value.trim().length > 0
+        })
+        console.log(fillFields)
+
+        return fillFields.length > 0
+    }
+
     function getFieldHtml(field) {
         // eslint-disable-next-line react-hooks/rules-of-hooks
-        let fieldRef = useRef(field.value)
-        let fieldValue = fieldRef.current
+        if( outputMode && field.type === "h3" && !h3FieldsFilled(field) ){
+            return false
+        }
+
+        if (outputMode && field.value.trim() === "" && field.type !== "h3")
+            return false
 
         // eslint-disable-next-line default-case
         switch (field.type) {
@@ -30,80 +50,66 @@ export default function CreatedFields({createdField, index, sectionName}) {
                             (field.showName && field.value.trim()) &&
                             <span style={{fontWeight: "bold"}}>{field.name}:&nbsp;</span>
                         }
-                        <div
-                            contentEditable
-                            suppressContentEditableWarning={true}
-                            dangerouslySetInnerHTML={{ __html: fieldValue }}
-                            onInput={(event) => {
-                                changeSectionItem(event, field)
+                        <ContentEditable
+                            html={field.value}
+                            onChange={(e) => {
+                                changeSectionItem(e, field)
                             }}
-                            onPaste={(event) => {
-                                changeSectionItem(event, field)
-                                fieldRef.current = field.value
-                            }}
+                            onPaste={onPasteHandler}
                             placeholder={field.name}
-                        >
-                        </div>
+                        />
                     </div>
                 )
             case "h2":
                 return (
-                    <h2 contentEditable
-                        suppressContentEditableWarning={true}
-                        dangerouslySetInnerHTML={{ __html: fieldValue }}
-                        onInput={(event) => {
-                            if( event.nativeEvent.inputType === 'insertFromPaste' ){
-                                event.currentTarget.innerHTML = event.currentTarget.innerHTML.replace(/<(.|\n)*?>/g, '')
-                                fieldRef.current = event.currentTarget.innerHTML
-                                setEndOfContenteditable(event.currentTarget)
-                            }
-
-                            changeSectionItem(event, field)
-                        }}
-                        style={{backgroundColor: "#0E1025", color: "#fff", padding: "10px"}}
-                        placeholder={field.name}
-                    >
+                    <h2>
+                        <span>
+                            <font color="#ffffff">
+                                <ContentEditable
+                                    style={{backgroundColor: 'rgb(14, 16, 37)', padding: '10px', display: 'inline-block', width: '100%'}}
+                                    html={field.value}
+                                    onChange={(e) => {
+                                        changeSectionItem(e, field)
+                                    }}
+                                    onPaste={onPasteHandler}
+                                    placeholder={field.name}
+                                    tagName={'div'}
+                                />
+                            </font>
+                        </span>
                     </h2>
                 )
             case "h3":
                 return (<h3>– {field.name}</h3>)
             case "link":
                 return (
-                    <div
-                        contentEditable
-                        suppressContentEditableWarning={true}
+                    <ContentEditable
                         className={"content-editable"}
+                        disabled={outputMode}
+                        href={outputMode ? field.value : ''}
+                        target={outputMode ? '_blank' : ''}
+                        html={field.value}
+                        onChange={(e) => {
+                            changeSectionItem(e, field)
+                        }}
+                        onPaste={onPasteHandler}
                         placeholder={field.name}
-                        dangerouslySetInnerHTML={{ __html: fieldValue }}
-                        onInput={(event) => {
-                            changeSectionItem(event, field)
-                        }}
-                        onPaste={(event) => {
-                            changeSectionItem(event, field)
-                            fieldRef.current = field.value
-                        }}
-                    >
-                    </div>
+                        tagName={outputMode ? 'a' : 'div'}
+                    />
                 )
             case "comment":
                 return (
-                    <i className={"content-editable"}>
+                    <i className={"content-editable"} style={{marginTop: "16px"}}>
                         {field.value && <b>Комментарий:&nbsp;</b>}
-                        <div
+                        <ContentEditable
                             style={{whiteSpace: "pre-line"}}
-                            contentEditable
-                            suppressContentEditableWarning={true}
-                            dangerouslySetInnerHTML={{ __html: fieldValue }}
-                            onInput={(event) => {
-                                changeSectionItem(event, field)
+                            html={field.value}
+                            onChange={(e) => {
+                                changeSectionItem(e, field)
                             }}
-                            onPaste={(event) => {
-                                changeSectionItem(event, field)
-                                fieldRef.current = field.value
-                            }}
+                            onPaste={onPasteHandler}
                             placeholder={field.name}
-                        >
-                        </div>
+                        />
                     </i>
                 )
         }
@@ -130,9 +136,12 @@ export default function CreatedFields({createdField, index, sectionName}) {
                     >
                         <div className="sections__sub-item__control-btns">
                             <i className="fi fi-rr-arrows cube-btn cube-btn_default move-btn"></i>
-                            <i className="fi fi-rr-minus-small cube-btn cube-btn_red sections__sub-item__delete"
-                               onClick={removeSectionItem.bind(null, sectionName, createdField.id)}
-                            ></i>
+                            {
+                                !outputMode &&
+                                <i className="fi fi-rr-minus-small cube-btn cube-btn_red sections__sub-item__delete"
+                                   onClick={removeSectionItem.bind(null, sectionName, createdField.id)}
+                                ></i>
+                            }
                         </div>
                         <div className="sections__sub-item__fields">
                             {getFields(createdField.fields)}
