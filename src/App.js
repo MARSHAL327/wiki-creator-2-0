@@ -1,6 +1,5 @@
 import {useEffect, useState} from "react";
 import Header from "./components/Header";
-// import WorkSpace from "./components/WorkSpace";
 import ActionButtons from "./components/ActionButtons";
 import Context from "./context";
 import OutputButtons from "./components/OutputButtons";
@@ -249,7 +248,10 @@ export default function App() {
         },
     }
 
-    let localData = localStorage.getItem("sectionsData") !== 'null' ? JSON.parse(localStorage.getItem("sectionsData")).sections : {};
+    let jsonSectionsData = JSON.parse(localStorage.getItem("sectionsData"))
+    let localData = jsonSectionsData != null && jsonSectionsData.sections
+        ? jsonSectionsData.sections
+        : {};
     Object.assign(defaultSectionData, localData)
 
     let [sectionsData, setSectionsData] = useState(defaultSectionData)

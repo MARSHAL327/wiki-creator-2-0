@@ -58,7 +58,7 @@ export default function WorkSpace20({sections, setSectionsData, outputMode}) {
                                             <i className="fi fi-rr-minus-small cube-btn cube-btn_red sections__control-btns"
                                                onClick={toggleSectionVisible.bind(null, sectionName, false)}
                                                data-for={"remove-section-" + i}
-                                               data-tip="Удалить весь раздел"
+                                               data-tip="Удалить ВЕСЬ раздел"
                                                data-iscapture="true"
                                             ></i>
                                         </>
