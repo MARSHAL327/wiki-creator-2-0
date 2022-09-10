@@ -2,6 +2,7 @@ import {Draggable} from "react-beautiful-dnd";
 import {useContext} from "react";
 import Context from "../context";
 import ContentEditable from "react-contenteditable";
+import ReactTooltip from "react-tooltip";
 
 export default function CreatedFields({createdField, index, sectionName, outputMode}) {
     const {removeSectionItem, changeSectionItem} = useContext(Context)
@@ -39,6 +40,15 @@ export default function CreatedFields({createdField, index, sectionName, outputM
         if (outputMode && field.value.trim() === "" && field.type !== "h3")
             return false
 
+        let fieldObject = {
+            html: field.value,
+            onChange: function (e) {
+                changeSectionItem(e, field)
+            },
+            onPaste: onPasteHandler,
+            placeholder: field.name,
+        }
+
         // eslint-disable-next-line default-case
         switch (field.type) {
             case "text":
@@ -51,12 +61,7 @@ export default function CreatedFields({createdField, index, sectionName, outputM
                             <span style={{fontWeight: "bold"}}>{field.name}:&nbsp;</span>
                         }
                         <ContentEditable
-                            html={field.value}
-                            onChange={(e) => {
-                                changeSectionItem(e, field)
-                            }}
-                            onPaste={onPasteHandler}
-                            placeholder={field.name}
+                            {...fieldObject}
                         />
                     </div>
                 )
@@ -66,13 +71,8 @@ export default function CreatedFields({createdField, index, sectionName, outputM
                         <span>
                             <font color="#ffffff">
                                 <ContentEditable
+                                    {...fieldObject}
                                     style={{backgroundColor: 'rgb(14, 16, 37)', padding: '10px', display: 'inline-block', width: '100%'}}
-                                    html={field.value}
-                                    onChange={(e) => {
-                                        changeSectionItem(e, field)
-                                    }}
-                                    onPaste={onPasteHandler}
-                                    placeholder={field.name}
                                     tagName={'div'}
                                 />
                             </font>
@@ -84,16 +84,11 @@ export default function CreatedFields({createdField, index, sectionName, outputM
             case "link":
                 return (
                     <ContentEditable
+                        {...fieldObject}
                         className={"content-editable"}
                         disabled={outputMode}
                         href={outputMode ? field.value : ''}
                         target={outputMode ? '_blank' : ''}
-                        html={field.value}
-                        onChange={(e) => {
-                            changeSectionItem(e, field)
-                        }}
-                        onPaste={onPasteHandler}
-                        placeholder={field.name}
                         tagName={outputMode ? 'a' : 'div'}
                     />
                 )
@@ -102,13 +97,8 @@ export default function CreatedFields({createdField, index, sectionName, outputM
                     <i className={"content-editable"} style={{marginTop: "16px"}}>
                         {field.value && <b>Комментарий:&nbsp;</b>}
                         <ContentEditable
+                            {...fieldObject}
                             style={{whiteSpace: "pre-line"}}
-                            html={field.value}
-                            onChange={(e) => {
-                                changeSectionItem(e, field)
-                            }}
-                            onPaste={onPasteHandler}
-                            placeholder={field.name}
                         />
                     </i>
                 )
@@ -140,13 +130,26 @@ export default function CreatedFields({createdField, index, sectionName, outputM
                                 !outputMode &&
                                 <i className="fi fi-rr-minus-small cube-btn cube-btn_red sections__sub-item__delete"
                                    onClick={removeSectionItem.bind(null, sectionName, createdField.id)}
+                                   data-for={"remove-chapter-" + createdField.id}
+                                   data-tip="Удалить секцию"
+                                   data-iscapture="true"
                                 ></i>
                             }
                         </div>
                         <div className="sections__sub-item__fields">
                             {getFields(createdField.fields)}
                         </div>
-
+                        {
+                            !outputMode && (
+                                <ReactTooltip
+                                    id={"remove-chapter-" + createdField.id}
+                                    place={"left"}
+                                    effect={"solid"}
+                                    multiline={true}
+                                    className={"main-tooltip"}
+                                />
+                            )
+                        }
                     </div>
                 )
             }

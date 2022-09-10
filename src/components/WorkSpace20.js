@@ -3,6 +3,7 @@ import Context from "../context";
 import AddSection from "./AddSection";
 import {DragDropContext, Droppable} from "react-beautiful-dnd";
 import CreatedFields from "./CreatedFields";
+import ReactTooltip from "react-tooltip";
 
 export default function WorkSpace20({sections, setSectionsData, outputMode}) {
     const {
@@ -34,7 +35,7 @@ export default function WorkSpace20({sections, setSectionsData, outputMode}) {
     return (
         <DragDropContext onDragEnd={onDragEnd}>
             <div className="white-block sections" id={"html-code"}>
-                {Object.keys(sections).map((sectionName) => {
+                {Object.keys(sections).map((sectionName, i) => {
                     if (sections[sectionName].sectionIsVisible === false) return false
 
                     return (
@@ -45,9 +46,17 @@ export default function WorkSpace20({sections, setSectionsData, outputMode}) {
                                     !outputMode && (
                                         <>
                                             <i className="fi fi-rr-plus-small cube-btn cube-btn_green sections__control-btns"
-                                               onClick={addSectionItem.bind(null, sections[sectionName])}></i>
+                                               onClick={addSectionItem.bind(null, sections[sectionName])}
+                                               data-for={"add-chapter-" + i}
+                                               data-tip="Добавить секцию"
+                                               data-iscapture="true"
+                                            ></i>
                                             <i className="fi fi-rr-minus-small cube-btn cube-btn_red sections__control-btns"
-                                               onClick={toggleSectionVisible.bind(null, sectionName, false)}></i>
+                                               onClick={toggleSectionVisible.bind(null, sectionName, false)}
+                                               data-for={"remove-section-" + i}
+                                               data-tip="Удалить весь раздел"
+                                               data-iscapture="true"
+                                            ></i>
                                         </>
                                     )
                                 }
@@ -81,6 +90,28 @@ export default function WorkSpace20({sections, setSectionsData, outputMode}) {
                             </Droppable>
 
                             <hr/>
+                            {
+                                !outputMode && (
+                                    <>
+                                        <ReactTooltip
+                                            id={"add-chapter-" + i}
+                                            place={"top"}
+                                            effect={"solid"}
+                                            multiline={true}
+                                            className={"main-tooltip"}
+                                        />
+                                        <ReactTooltip
+                                            id={"remove-section-" + i}
+                                            place={"top"}
+                                            effect={"solid"}
+                                            type={"error"}
+                                            multiline={true}
+                                            backgroundColor={"#F01825"}
+                                            className={"main-tooltip"}
+                                        />
+                                    </>
+                                )
+                            }
                         </div>
                     )
                 })}
