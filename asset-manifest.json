@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/wiki-creator-2-0/static/css/main.9277bb19.css",
-    "main.js": "/wiki-creator-2-0/static/js/main.37ef7579.js",
+    "main.js": "/wiki-creator-2-0/static/js/main.eb0e2060.js",
     "static/js/787.34226139.chunk.js": "/wiki-creator-2-0/static/js/787.34226139.chunk.js",
     "static/media/molotok_logo.svg": "/wiki-creator-2-0/static/media/molotok_logo.f5d6efacb2c87906e3319dba85d43378.svg",
     "index.html": "/wiki-creator-2-0/index.html",
     "main.9277bb19.css.map": "/wiki-creator-2-0/static/css/main.9277bb19.css.map",
-    "main.37ef7579.js.map": "/wiki-creator-2-0/static/js/main.37ef7579.js.map",
+    "main.eb0e2060.js.map": "/wiki-creator-2-0/static/js/main.eb0e2060.js.map",
     "787.34226139.chunk.js.map": "/wiki-creator-2-0/static/js/787.34226139.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.9277bb19.css",
-    "static/js/main.37ef7579.js"
+    "static/js/main.eb0e2060.js"
   ]
 }
