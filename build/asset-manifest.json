@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.9277bb19.css",
+    "main.js": "/static/js/main.ce82b1be.js",
+    "static/js/787.34226139.chunk.js": "/static/js/787.34226139.chunk.js",
+    "static/media/molotok_logo.svg": "/static/media/molotok_logo.f5d6efacb2c87906e3319dba85d43378.svg",
+    "index.html": "/index.html",
+    "main.9277bb19.css.map": "/static/css/main.9277bb19.css.map",
+    "main.ce82b1be.js.map": "/static/js/main.ce82b1be.js.map",
+    "787.34226139.chunk.js.map": "/static/js/787.34226139.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.9277bb19.css",
+    "static/js/main.ce82b1be.js"
+  ]
+}
