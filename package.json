@@ -1,7 +1,7 @@
 {
   "homepage": "https://marshal327.github.io/wiki-creator-2-0",
   "name": "wiki-creator-react",
-  "version": "0.1.0",
+  "version": "2.0",
   "private": true,
   "dependencies": {
     "@flaticon/flaticon-uicons": "^1.7.0",
