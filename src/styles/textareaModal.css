@@ -13,6 +13,7 @@
 }
 
 .modal__body {
+    position: relative;
     width: 700px;
 }
 
@@ -37,7 +38,9 @@
     border: 0;
 }
 
-.modal__close {
-    float: right;
-    margin-right: -45px;
+.modal__close_main {
+    position: relative;
+    left: -50px;
+    top: 0;
+    float: left;
 }

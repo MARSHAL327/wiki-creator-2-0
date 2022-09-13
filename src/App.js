@@ -4,9 +4,9 @@ import Header from "./components/Header";
 import ActionButtons from "./components/ActionButtons";
 import OutputButtons from "./components/OutputButtons";
 import WorkSpace20 from "./components/WorkSpace20";
+import {observer} from "mobx-react";
 
-
-export default function App() {
+const App = observer( () => {
     // Заполняем основные данные
     const dataVersion = "2.0"
     const serverFields = [
@@ -267,7 +267,7 @@ export default function App() {
     }, [sectionsData])
 
     // Остальные переменные
-    let [outputMode, setOutputMode] = useState(false)
+    // let [outputMode, setOutputMode] = useState(false)
     let fieldDeepDepthLevel = ["Боевые сайты", "Тестовые сайты"]
     let commentObject = {
         name: "Комментарий",
@@ -414,9 +414,9 @@ export default function App() {
         })
     }
 
-    function toggleOutputMode() {
-        setOutputMode(outputMode => !outputMode)
-    }
+    // function toggleOutputMode() {
+    //     setOutputMode(outputMode => !outputMode)
+    // }
 
     function deleteAll() {
         localStorage.setItem('sectionsData', null)
@@ -566,19 +566,18 @@ export default function App() {
                             sections={sectionsData}
                         />
                         <WorkSpace20
-                            outputMode={outputMode}
                             sections={sectionsData}
                             setSectionsData={setSectionsData}
                         />
                         <OutputButtons
                             dataVersion={dataVersion}
                             sections={sectionsData}
-                            outputMode={outputMode}
-                            toggleOutputMode={toggleOutputMode}
                         />
                     </div>
                 </div>
             </div>
         </Context.Provider>
     );
-}
+})
+
+export default App

@@ -3,8 +3,10 @@ import {useContext} from "react";
 import Context from "../context";
 import ContentEditable from "react-contenteditable";
 import ReactTooltip from "react-tooltip";
+import {observer} from "mobx-react";
+import OutputData from "../store/outputData";
 
-export default function CreatedFields({createdField, index, sectionName, outputMode}) {
+const CreatedFields = observer( ({createdField, index, sectionName}) => {
     const {removeSectionItem, changeSectionItem} = useContext(Context)
     const styles = {
         blockStyles: {
@@ -32,11 +34,11 @@ export default function CreatedFields({createdField, index, sectionName, outputM
     }
 
     function getFieldHtml(field) {
-        if( outputMode && field.type === "h3" && !h3FieldsFilled(field) ){
+        if( OutputData.outputMode && field.type === "h3" && !h3FieldsFilled(field) ){
             return false
         }
 
-        if (outputMode && field.value.trim() === "" && field.type !== "h3")
+        if (OutputData.outputMode && field.value.trim() === "" && field.type !== "h3")
             return false
 
         let fieldObject = {
@@ -85,10 +87,10 @@ export default function CreatedFields({createdField, index, sectionName, outputM
                     <ContentEditable
                         {...fieldObject}
                         className={"content-editable"}
-                        disabled={outputMode}
-                        href={outputMode ? field.value : ''}
-                        target={outputMode ? '_blank' : ''}
-                        tagName={outputMode ? 'a' : 'div'}
+                        disabled={OutputData.outputMode}
+                        href={OutputData.outputMode ? field.value : ''}
+                        target={OutputData.outputMode ? '_blank' : ''}
+                        tagName={OutputData.outputMode ? 'a' : 'div'}
                     />
                 )
             case "comment":
@@ -127,7 +129,7 @@ export default function CreatedFields({createdField, index, sectionName, outputM
                             {/*<i className="fi fi-rr-caret-down cube-btn cube-btn_default caret-btn"></i>*/}
                             <i className="fi fi-rr-arrows cube-btn cube-btn_default move-btn"></i>
                             {
-                                !outputMode &&
+                                !OutputData.outputMode &&
                                 <i className="fi fi-rr-minus-small cube-btn cube-btn_red sections__sub-item__delete"
                                    onClick={removeSectionItem.bind(null, sectionName, createdField.id)}
                                    data-for={"remove-chapter-" + createdField.id}
@@ -140,7 +142,7 @@ export default function CreatedFields({createdField, index, sectionName, outputM
                             {getFields(createdField.fields)}
                         </div>
                         {
-                            !outputMode && (
+                            !OutputData.outputMode && (
                                 <ReactTooltip
                                     id={"remove-chapter-" + createdField.id}
                                     place={"left"}
@@ -155,4 +157,6 @@ export default function CreatedFields({createdField, index, sectionName, outputM
             }
         </Draggable>
     )
-}
+} )
+
+export default CreatedFields

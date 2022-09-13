@@ -1,3 +1,7 @@
+:root {
+    --swiper-theme-color: #fff
+}
+
 header {
     background-color: #0E1025;
     padding: 20px;
@@ -19,4 +23,8 @@ header .container {
     display: flex;
     align-items: center;
     gap: 20px;
+}
+
+header a {
+    text-decoration: none;
 }

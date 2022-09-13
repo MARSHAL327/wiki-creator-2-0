@@ -4,8 +4,10 @@ import AddSection from "./AddSection";
 import {DragDropContext, Droppable} from "react-beautiful-dnd";
 import CreatedFields from "./CreatedFields";
 import ReactTooltip from "react-tooltip";
+import OutputData from "../store/outputData";
+import {observer} from "mobx-react";
 
-export default function WorkSpace20({sections, setSectionsData, outputMode}) {
+const WorkSpace20 = observer( ({sections, setSectionsData}) => {
     const {
         addSectionItem,
         getVisibleSectionCount,
@@ -47,7 +49,7 @@ export default function WorkSpace20({sections, setSectionsData, outputMode}) {
                                     </span>
                                 </h1>
                                 {
-                                    !outputMode && (
+                                    !OutputData.outputMode && (
                                         <>
                                             <i className="fi fi-rr-plus-small cube-btn cube-btn_green sections__control-btns"
                                                onClick={addSectionItem.bind(null, sections[sectionName])}
@@ -55,7 +57,8 @@ export default function WorkSpace20({sections, setSectionsData, outputMode}) {
                                                data-tip="Добавить секцию"
                                                data-iscapture="true"
                                             ></i>
-                                            <i className="fi fi-rr-minus-small cube-btn cube-btn_red sections__control-btns"
+                                            <i className="fi fi-rr-trash cube-btn cube-btn_red sections__control-btns"
+                                               style={{ fontSize: "16px" }}
                                                onClick={toggleSectionVisible.bind(null, sectionName, false)}
                                                data-for={"remove-section-" + i}
                                                data-tip="Удалить ВЕСЬ раздел"
@@ -80,7 +83,7 @@ export default function WorkSpace20({sections, setSectionsData, outputMode}) {
                                                                 createdField={createdField}
                                                                 sectionName={sectionName}
                                                                 index={index}
-                                                                outputMode={outputMode}
+                                                                outputMode={OutputData.outputMode}
                                                             />
                                                         )
                                                     )
@@ -95,7 +98,7 @@ export default function WorkSpace20({sections, setSectionsData, outputMode}) {
 
                             <hr/>
                             {
-                                !outputMode && (
+                                !OutputData.outputMode && (
                                     <>
                                         <ReactTooltip
                                             id={"add-chapter-" + i}
@@ -126,7 +129,7 @@ export default function WorkSpace20({sections, setSectionsData, outputMode}) {
                     />
                 }
 
-                { outputMode &&
+                { OutputData.outputMode &&
                     <details>
                         <summary>
                             <h1 style={{ color: "rgb(0, 166, 80)", fontSize: "24px", fontWeight: "bold" }}>JSON вставка</h1>
@@ -138,4 +141,6 @@ export default function WorkSpace20({sections, setSectionsData, outputMode}) {
             </div>
         </DragDropContext>
     )
-}
+} )
+
+export default WorkSpace20

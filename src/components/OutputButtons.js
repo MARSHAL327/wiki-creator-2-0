@@ -1,8 +1,10 @@
 import "../styles/outputButtons.css"
 import ReactTooltip from "react-tooltip";
 import {useRef} from "react";
+import {observer} from "mobx-react";
+import OutputMode from "../store/outputData";
 
-export default function OutputButtons({sections, toggleOutputMode, outputMode, dataVersion}) {
+const OutputButtons = observer(({sections, dataVersion}) => {
     const copyJsonRef = useRef(null);
     const copyCodeRef = useRef(null);
     const tooltipObject = {
@@ -15,39 +17,17 @@ export default function OutputButtons({sections, toggleOutputMode, outputMode, d
         className: "main-tooltip",
     }
 
-    function copyText(text) {
-        try {
-            navigator.clipboard.writeText(text)
-        } catch (e) {
-            throw e;
-        }
-    }
-
-    function copyHtml() {
-        let htmlCode = document.getElementById("html-code").outerHTML;
-
-        copyText(htmlCode);
-        ReactTooltip.hide(copyCodeRef.current)
-    }
-
-    function copyJson() {
-        let sectionsWithVersion = {
-            "version": dataVersion,
-            sections: sections
-        }
-
-        copyText(JSON.stringify(sectionsWithVersion));
-        ReactTooltip.hide(copyJsonRef.current)
-    }
-
     return (
         <div>
             <div className={"data-title"}>Выходные данные</div>
-            <div className="btn-dotted btn-dotted_default" onClick={toggleOutputMode}>
-                {outputMode ? "Редактировать данные" : "Посмотреть итоговый вариант"}
+            <div className="btn-dotted btn-dotted_default" onClick={() => OutputMode.toggleOutputMode()}>
+                {OutputMode.outputMode ? "Редактировать данные" : "Посмотреть итоговый вариант"}
             </div>
 
-            <div className="btn-dotted btn-dotted_default" onClick={copyJson}
+            <div className="btn-dotted btn-dotted_default" onClick={() => {
+                OutputMode.copyJson("2.0", sections)
+                ReactTooltip.hide(copyCodeRef.current)
+            }}
                  ref={copyJsonRef}
                  data-for={"copy-json"}
                  data-tip="Скопировано!"
@@ -61,9 +41,12 @@ export default function OutputButtons({sections, toggleOutputMode, outputMode, d
             />
 
             {
-                outputMode && (
+                OutputMode.outputMode && (
                     <>
-                        <div className="btn-dotted btn-dotted_default" onClick={copyHtml}
+                        <div className="btn-dotted btn-dotted_default" onClick={() => {
+                            OutputMode.copyHtml()
+                            ReactTooltip.hide(copyCodeRef.current)
+                        }}
                              ref={copyCodeRef}
                              data-for={"copy-code"}
                              data-tip="Скопировано!"
@@ -81,4 +64,6 @@ export default function OutputButtons({sections, toggleOutputMode, outputMode, d
             }
         </div>
     )
-}
+})
+
+export default OutputButtons
