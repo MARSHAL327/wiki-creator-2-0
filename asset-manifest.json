@@ -1,16 +1,19 @@
 {
   "files": {
-    "main.css": "/wiki-creator-2-0/static/css/main.9277bb19.css",
-    "main.js": "/wiki-creator-2-0/static/js/main.eb0e2060.js",
+    "main.css": "/wiki-creator-2-0/static/css/main.2ad53758.css",
+    "main.js": "/wiki-creator-2-0/static/js/main.71e79acf.js",
     "static/js/787.34226139.chunk.js": "/wiki-creator-2-0/static/js/787.34226139.chunk.js",
+    "static/media/Инструкция 2.jpg": "/wiki-creator-2-0/static/media/Инструкция 2.759f2c3e25140a9cf5ea.jpg",
+    "static/media/Инструкция 3.jpg": "/wiki-creator-2-0/static/media/Инструкция 3.c3bccc150929f89bf7ca.jpg",
+    "static/media/Инструкция 1.jpg": "/wiki-creator-2-0/static/media/Инструкция 1.6648c0bba306d20164af.jpg",
     "static/media/molotok_logo.svg": "/wiki-creator-2-0/static/media/molotok_logo.f5d6efacb2c87906e3319dba85d43378.svg",
     "index.html": "/wiki-creator-2-0/index.html",
-    "main.9277bb19.css.map": "/wiki-creator-2-0/static/css/main.9277bb19.css.map",
-    "main.eb0e2060.js.map": "/wiki-creator-2-0/static/js/main.eb0e2060.js.map",
+    "main.2ad53758.css.map": "/wiki-creator-2-0/static/css/main.2ad53758.css.map",
+    "main.71e79acf.js.map": "/wiki-creator-2-0/static/js/main.71e79acf.js.map",
     "787.34226139.chunk.js.map": "/wiki-creator-2-0/static/js/787.34226139.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.9277bb19.css",
-    "static/js/main.eb0e2060.js"
+    "static/css/main.2ad53758.css",
+    "static/js/main.71e79acf.js"
   ]
 }
