@@ -7,7 +7,7 @@ import ReactTooltip from "react-tooltip";
 import OutputData from "../store/outputData";
 import {observer} from "mobx-react";
 
-const WorkSpace20 = observer( ({sections, setSectionsData}) => {
+const WorkSpace20 = observer(({sections, setSectionsData}) => {
     const {
         addSectionItem,
         getVisibleSectionCount,
@@ -58,7 +58,7 @@ const WorkSpace20 = observer( ({sections, setSectionsData}) => {
                                                data-iscapture="true"
                                             ></i>
                                             <i className="fi fi-rr-trash cube-btn cube-btn_red sections__control-btns"
-                                               style={{ fontSize: "16px" }}
+                                               style={{fontSize: "16px"}}
                                                onClick={toggleSectionVisible.bind(null, sectionName, false)}
                                                data-for={"remove-section-" + i}
                                                data-tip="Удалить ВЕСЬ раздел"
@@ -73,26 +73,24 @@ const WorkSpace20 = observer( ({sections, setSectionsData}) => {
 
                             <Droppable droppableId={sectionName}>
                                 {
-                                    (provided) => {
-                                        return (
-                                            <div ref={provided.innerRef} {...provided.droppableProps}>
-                                                {
-                                                    sections[sectionName].createdFields.map((createdField, index) => (
-                                                            <CreatedFields
-                                                                key={createdField.id}
-                                                                createdField={createdField}
-                                                                sectionName={sectionName}
-                                                                index={index}
-                                                                outputMode={OutputData.outputMode}
-                                                            />
-                                                        )
+                                    (provided) => (
+                                        <div ref={provided.innerRef} {...provided.droppableProps}>
+                                            {
+                                                sections[sectionName].createdFields.map((createdField, index) => (
+                                                        <CreatedFields
+                                                            key={createdField.id}
+                                                            createdField={createdField}
+                                                            sectionName={sectionName}
+                                                            index={index}
+                                                            outputMode={OutputData.outputMode}
+                                                        />
                                                     )
-                                                }
+                                                )
+                                            }
 
-                                                {provided.placeholder}
-                                            </div>
-                                        )
-                                    }
+                                            {provided.placeholder}
+                                        </div>
+                                    )
                                 }
                             </Droppable>
 
@@ -129,10 +127,11 @@ const WorkSpace20 = observer( ({sections, setSectionsData}) => {
                     />
                 }
 
-                { OutputData.outputMode &&
+                {OutputData.outputMode &&
                     <details>
                         <summary>
-                            <h1 style={{ color: "rgb(0, 166, 80)", fontSize: "24px", fontWeight: "bold" }}>JSON вставка</h1>
+                            <h1 style={{color: "rgb(0, 166, 80)", fontSize: "24px", fontWeight: "bold"}}>JSON
+                                вставка</h1>
                         </summary>
                         {JSON.stringify(sections)}
                     </details>
@@ -141,6 +140,6 @@ const WorkSpace20 = observer( ({sections, setSectionsData}) => {
             </div>
         </DragDropContext>
     )
-} )
+})
 
 export default WorkSpace20

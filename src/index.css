@@ -164,7 +164,7 @@ code {
     transition: .3s;
 }
 
-.grey-hover i{
+.grey-hover i {
     display: flex;
 }
 
@@ -424,7 +424,7 @@ code {
     text-align: center;
 }
 
-.guide-modal{
+.guide-modal {
     width: 100vw;
     height: 100vh;
     position: fixed;
@@ -432,14 +432,21 @@ code {
     left: 0;
     z-index: 5;
     background-color: #fff;
+    transform: translateX(100vw);
+    transition: transform 1s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.guide-modal__swiper, .guide-modal__swiper img{
+.guide-modal_active {
+    transform: translateX(0);
+    transition: transform 1s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.guide-modal__swiper, .guide-modal__swiper img {
     width: 100vw;
     height: 100vh;
 }
 
-.modal__close{
+.modal__close {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -451,6 +458,6 @@ code {
     color: #000;
 }
 
-.modal__close:hover{
+.modal__close:hover {
     color: #ffffff;
 }

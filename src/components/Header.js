@@ -1,8 +1,8 @@
 import logo from './../assets/molotok_logo.svg'
 import ReactTooltip from "react-tooltip";
 import {useState} from "react";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper';
+import {Swiper, SwiperSlide} from 'swiper/react';
+import {Navigation, Pagination} from 'swiper';
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -14,11 +14,15 @@ import guide2 from "../assets/Инструкция 2.jpg"
 import guide3 from "../assets/Инструкция 3.jpg"
 
 export default function Header({deleteAll}) {
+    let classes = ["guide-modal"]
     let [guideModalIsOpen, setGuideModalIsOpen] = useState(false)
 
     function toggleGuideModal() {
-        setGuideModalIsOpen( guideModalIsOpen => !guideModalIsOpen )
+        setGuideModalIsOpen(guideModalIsOpen => !guideModalIsOpen)
     }
+
+    if (guideModalIsOpen)
+        classes.push("guide-modal_active")
 
     return (
         <header>
@@ -56,31 +60,31 @@ export default function Header({deleteAll}) {
                 </div>
             </div>
 
-            { guideModalIsOpen &&
-                <div className="guide-modal">
-                    <Swiper
-                        pagination={{
-                            type: "progressbar",
-                        }}
-                        modules={[Navigation, Pagination]}
-                        navigation={true}
-                        className={"guide-modal__swiper"}
-                    >
-                        <SwiperSlide>
-                            <img src={guide1} alt=""/>
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <img src={guide2} alt=""/>
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <img src={guide3} alt=""/>
-                        </SwiperSlide>
-                    </Swiper>
-                    <div className="guide-modal__close grey-hover modal__close" onClick={toggleGuideModal}>
-                        <i className="fi fi-rr-cross-small"></i>
-                    </div>
+
+            <div className={classes.join(" ")}>
+                <Swiper
+                    pagination={{
+                        type: "progressbar",
+                    }}
+                    modules={[Navigation, Pagination]}
+                    navigation={true}
+                    className={"guide-modal__swiper"}
+                >
+                    <SwiperSlide>
+                        <img src={guide1} alt=""/>
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <img src={guide2} alt=""/>
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <img src={guide3} alt=""/>
+                    </SwiperSlide>
+                </Swiper>
+                <div className="guide-modal__close grey-hover modal__close" onClick={toggleGuideModal}>
+                    <i className="fi fi-rr-cross-small"></i>
                 </div>
-            }
+            </div>
+
 
             <ReactTooltip
                 id={"question"}

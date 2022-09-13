@@ -267,7 +267,6 @@ const App = observer( () => {
     }, [sectionsData])
 
     // Остальные переменные
-    // let [outputMode, setOutputMode] = useState(false)
     let fieldDeepDepthLevel = ["Боевые сайты", "Тестовые сайты"]
     let commentObject = {
         name: "Комментарий",
@@ -351,12 +350,12 @@ const App = observer( () => {
     }
 
     function generateFieldValues(sectionFields, sectionName) {
-        if (!fieldDeepDepthLevel.includes(sectionName))
+        if (!fieldDeepDepthLevel.includes(sectionName) && sectionFields[sectionFields.length - 1].type !== "comment" )
             sectionFields.push(commentObject)
 
         return sectionFields.map((item, idx) => {
             if (item.fields) {
-                if (item.fields[item.fields.length - 1].name !== "Комментарий")
+                if (item.fields[item.fields.length - 1].type !== "comment")
                     item.fields.push(commentObject)
 
                 item.fields = generateFieldValues(item.fields, sectionName)
@@ -414,10 +413,6 @@ const App = observer( () => {
         })
     }
 
-    // function toggleOutputMode() {
-    //     setOutputMode(outputMode => !outputMode)
-    // }
-
     function deleteAll() {
         localStorage.setItem('sectionsData', null)
 
@@ -449,7 +444,6 @@ const App = observer( () => {
                 for (let sectionName in sections) {
 
                     if (sameSections.includes(sectionName)) {
-                        // eslint-disable-next-line
                         sections[sectionName].createdFields = sections[sectionName].createdFields.map((createdField) => {
                             let id = createdField.id
                             let newCreatedFields = []
@@ -506,7 +500,7 @@ const App = observer( () => {
 
                         defaultObject = {
                             name: sectionName,
-                            fields: sections[sectionName].fields,
+                            fields: defaultSectionData[sectionName].fields,
                             createdFields: sections[sectionName].createdFields,
                             sectionIsVisible: sections[sectionName].createdFields.length > 0,
                         }
@@ -531,7 +525,6 @@ const App = observer( () => {
         let parsedJson = JSON.parse(json)
         let sections = parsedJson.sections
 
-
         if (sections === undefined || parsedJson.version !== dataVersion)
             sections = convertToNewVersion(parsedJson, parsedJson.version)
 
@@ -541,6 +534,8 @@ const App = observer( () => {
             if (sections[sectionName].sectionIsVisible === undefined)
                 sections[sectionName].sectionIsVisible = sections[sectionName].createdFields.length > 0
         }
+
+        console.log(sections)
 
         Object.assign(sectionsData, sections)
         setSectionsData({...sectionsData})
