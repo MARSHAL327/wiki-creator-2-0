@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import Context from "./context";
 import Header from "./components/Header";
 import ActionButtons from "./components/ActionButtons";
@@ -6,7 +6,7 @@ import OutputButtons from "./components/OutputButtons";
 import WorkSpace20 from "./components/WorkSpace20";
 import {observer} from "mobx-react";
 
-const App = observer( () => {
+const App = observer(() => {
     // Заполняем основные данные
     const dataVersion = "2.0"
     const serverFields = [
@@ -350,7 +350,7 @@ const App = observer( () => {
     }
 
     function generateFieldValues(sectionFields, sectionName) {
-        if (!fieldDeepDepthLevel.includes(sectionName) && sectionFields[sectionFields.length - 1].type !== "comment" )
+        if (!fieldDeepDepthLevel.includes(sectionName) && sectionFields[sectionFields.length - 1].type !== "comment")
             sectionFields.push(commentObject)
 
         return sectionFields.map((item, idx) => {
@@ -370,9 +370,9 @@ const App = observer( () => {
         })
     }
 
-    function getVisibleSectionCount() {
+    let visibleSectionsCount = useMemo(() => {
         return Object.keys(sectionsData).filter(sectionName => sectionsData[sectionName].sectionIsVisible).length
-    }
+    }, [sectionsData])
 
     function toggleSectionVisible(sectionName, sectionIsVisible = true) {
         sectionsData[sectionName].sectionIsVisible = sectionIsVisible
@@ -535,8 +535,6 @@ const App = observer( () => {
                 sections[sectionName].sectionIsVisible = sections[sectionName].createdFields.length > 0
         }
 
-        console.log(sections)
-
         Object.assign(sectionsData, sections)
         setSectionsData({...sectionsData})
     }
@@ -547,7 +545,7 @@ const App = observer( () => {
             removeSectionItem,
             changeSectionItem,
             toggleSectionVisible,
-            getVisibleSectionCount,
+            visibleSectionsCount,
             reorder
         }}>
             <div>

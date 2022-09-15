@@ -5,16 +5,18 @@ import {DragDropContext, Droppable} from "react-beautiful-dnd";
 import CreatedFields from "./CreatedFields";
 import ReactTooltip from "react-tooltip";
 import OutputData from "../store/outputData";
+import SectionsStore from "../store/sectionsStore";
 import {observer} from "mobx-react";
+import {TransitionGroup} from "react-transition-group";
+import CSSTransition from "react-transition-group/CSSTransition";
 
 const WorkSpace20 = observer(({sections, setSectionsData}) => {
     const {
         addSectionItem,
-        getVisibleSectionCount,
+        visibleSectionsCount,
         toggleSectionVisible,
         reorder
     } = useContext(Context)
-    let visibleSectionCount = getVisibleSectionCount()
 
     function onDragEnd(result) {
         if (!result.destination) {
@@ -34,110 +36,132 @@ const WorkSpace20 = observer(({sections, setSectionsData}) => {
         setSectionsData({...sections});
     }
 
+    function onAnimationExit() {
+        SectionsStore.toggleAnimation()
+
+        setTimeout(() => {
+            SectionsStore.toggleAnimation()
+        }, 600)
+    }
+
     return (
         <DragDropContext onDragEnd={onDragEnd}>
             <div className="white-block sections" id={"html-code"}>
-                {Object.keys(sections).map((sectionName, i) => {
-                    if (sections[sectionName].sectionIsVisible === false) return false
+                <TransitionGroup>
+                    {Object.keys(sections).map((sectionName, i) => {
+                        if (sections[sectionName].sectionIsVisible === false) return false
 
-                    return (
-                        <div className={"sections__item"} key={sectionName}>
-                            <div className={"sections__title"}>
-                                <h1>
+                        return (
+                            <CSSTransition
+                                key={sectionName}
+                                classNames={"translate"}
+                                timeout={600}
+                                onExit={onAnimationExit}
+                            >
+                                <div className={"sections__item"}>
+                                    <div className={"sections__title"}>
+                                        <h1>
                                     <span style={sections[sectionName].styles ?? {color: "rgb(0, 166, 80)"}}>
                                         {sectionName}
                                     </span>
-                                </h1>
-                                {
-                                    !OutputData.outputMode && (
-                                        <>
-                                            <i className="fi fi-rr-plus-small cube-btn cube-btn_green sections__control-btns"
-                                               onClick={addSectionItem.bind(null, sections[sectionName])}
-                                               data-for={"add-chapter-" + i}
-                                               data-tip="Добавить секцию"
-                                               data-iscapture="true"
-                                            ></i>
-                                            <i className="fi fi-rr-trash cube-btn cube-btn_red sections__control-btns"
-                                               style={{fontSize: "16px"}}
-                                               onClick={toggleSectionVisible.bind(null, sectionName, false)}
-                                               data-for={"remove-section-" + i}
-                                               data-tip="Удалить ВЕСЬ раздел"
-                                               data-iscapture="true"
-                                            ></i>
-                                        </>
-                                    )
-                                }
+                                        </h1>
+                                        {
+                                            !OutputData.outputMode && (
+                                                <>
+                                                    <i className="fi fi-rr-plus-small cube-btn cube-btn_green sections__control-btns"
+                                                       onClick={addSectionItem.bind(null, sections[sectionName])}
+                                                       data-for={"add-chapter-" + i}
+                                                       data-tip="Добавить секцию"
+                                                       data-iscapture="true"
+                                                    ></i>
+                                                    <i className="fi fi-rr-trash cube-btn cube-btn_red sections__control-btns"
+                                                       style={{fontSize: "16px"}}
+                                                       onClick={toggleSectionVisible.bind(null, sectionName, false)}
+                                                       data-for={"remove-section-" + i}
+                                                       data-tip="Удалить ВЕСЬ раздел"
+                                                       data-iscapture="true"
+                                                    ></i>
+                                                </>
+                                            )
+                                        }
 
-                            </div>
+                                    </div>
 
 
-                            <Droppable droppableId={sectionName}>
-                                {
-                                    (provided) => (
-                                        <div ref={provided.innerRef} {...provided.droppableProps}>
-                                            {
-                                                sections[sectionName].createdFields.map((createdField, index) => (
-                                                        <CreatedFields
-                                                            key={createdField.id}
-                                                            createdField={createdField}
-                                                            sectionName={sectionName}
-                                                            index={index}
-                                                            outputMode={OutputData.outputMode}
-                                                        />
-                                                    )
-                                                )
-                                            }
+                                    <Droppable droppableId={sectionName}>
+                                        {
+                                            (provided) => (
+                                                <div ref={provided.innerRef} {...provided.droppableProps}>
+                                                    <TransitionGroup>
+                                                        {sections[sectionName].createdFields.map((createdField, index) => (
+                                                                <CSSTransition
+                                                                    key={createdField.id}
+                                                                    classNames={"translate"}
+                                                                    timeout={600}
+                                                                >
+                                                                    <CreatedFields
+                                                                        createdField={createdField}
+                                                                        sectionName={sectionName}
+                                                                        index={index}
+                                                                        outputMode={OutputData.outputMode}
+                                                                    />
+                                                                </CSSTransition>
+                                                            )
+                                                        )
+                                                        }
+                                                    </TransitionGroup>
+                                                    {provided.placeholder}
+                                                </div>
+                                            )
+                                        }
+                                    </Droppable>
 
-                                            {provided.placeholder}
-                                        </div>
-                                    )
-                                }
-                            </Droppable>
+                                    <hr/>
+                                    {
+                                        !OutputData.outputMode && (
+                                            <>
+                                                <ReactTooltip
+                                                    id={"add-chapter-" + i}
+                                                    place={"top"}
+                                                    effect={"solid"}
+                                                    multiline={true}
+                                                    className={"main-tooltip"}
+                                                />
+                                                <ReactTooltip
+                                                    id={"remove-section-" + i}
+                                                    place={"top"}
+                                                    effect={"solid"}
+                                                    type={"error"}
+                                                    multiline={true}
+                                                    backgroundColor={"#F01825"}
+                                                    className={"main-tooltip"}
+                                                />
+                                            </>
+                                        )
+                                    }
+                                </div>
+                            </CSSTransition>
+                        )
+                    })}
 
-                            <hr/>
-                            {
-                                !OutputData.outputMode && (
-                                    <>
-                                        <ReactTooltip
-                                            id={"add-chapter-" + i}
-                                            place={"top"}
-                                            effect={"solid"}
-                                            multiline={true}
-                                            className={"main-tooltip"}
-                                        />
-                                        <ReactTooltip
-                                            id={"remove-section-" + i}
-                                            place={"top"}
-                                            effect={"solid"}
-                                            type={"error"}
-                                            multiline={true}
-                                            backgroundColor={"#F01825"}
-                                            className={"main-tooltip"}
-                                        />
-                                    </>
-                                )
-                            }
-                        </div>
-                    )
-                })}
 
-                {visibleSectionCount === 0 &&
-                    <AddSection
-                        sections={sections}
-                    />
-                }
+                    {OutputData.outputMode &&
+                        <details>
+                            <summary>
+                                <h1 style={{color: "rgb(0, 166, 80)", fontSize: "24px", fontWeight: "bold"}}>JSON
+                                    вставка</h1>
+                            </summary>
+                            {JSON.stringify(sections)}
+                        </details>
+                    }
+                </TransitionGroup>
 
-                {OutputData.outputMode &&
-                    <details>
-                        <summary>
-                            <h1 style={{color: "rgb(0, 166, 80)", fontSize: "24px", fontWeight: "bold"}}>JSON
-                                вставка</h1>
-                        </summary>
-                        {JSON.stringify(sections)}
-                    </details>
-                }
-
+                <AddSection
+                    sections={sections}
+                    isVisible={visibleSectionsCount === 0 && !SectionsStore.animationOn}
+                />
             </div>
+
         </DragDropContext>
     )
 })

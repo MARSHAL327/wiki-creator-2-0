@@ -4,10 +4,9 @@ import {useContext, useState} from "react";
 import AddSection from "./AddSection";
 import Context from "../context";
 
-export default function ActionButtons({setSectionsDataFromJson, sections}){
-    const {getVisibleSectionCount} = useContext(Context)
+export default function ActionButtons({setSectionsDataFromJson, sections}) {
+    const {visibleSectionsCount} = useContext(Context)
     let [modalIsOpen, setModalIsOpen] = useState(false)
-    let visibleSectionCount = getVisibleSectionCount()
 
     function insertSectionText(modalText) {
         try {
@@ -35,7 +34,9 @@ export default function ActionButtons({setSectionsDataFromJson, sections}){
     return (
         <div>
             <div className={"data-title"}>Входные данные</div>
-            <div className="btn-dotted btn-dotted_default" onClick={() => {setModalIsOpen(modalIsOpen => !modalIsOpen)}}>
+            <div className="btn-dotted btn-dotted_default" onClick={() => {
+                setModalIsOpen(modalIsOpen => !modalIsOpen)
+            }}>
                 Вставить как текст
             </div>
             <label className="text-reader btn-dotted btn-dotted_default">
@@ -47,12 +48,11 @@ export default function ActionButtons({setSectionsDataFromJson, sections}){
                 setModalIsOpen={setModalIsOpen}
                 insertSectionText={insertSectionText}
             />
-            {
-                visibleSectionCount > 0 && visibleSectionCount < Object.keys(sections).length &&
-                <AddSection
-                    sections={sections}
-                />
-            }
+
+            <AddSection
+                sections={sections}
+                isVisible={visibleSectionsCount > 0 && visibleSectionsCount < Object.keys(sections).length}
+            />
 
         </div>
     )
