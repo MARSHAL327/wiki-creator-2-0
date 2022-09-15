@@ -43,6 +43,7 @@ export default function ActionButtons({setSectionsDataFromJson, sections}) {
                 Загрузить из файла
                 <input type="file" id="file" onChange={handleFileUpload}/>
             </label>
+
             <TextareaModal
                 modalIsOpen={modalIsOpen}
                 setModalIsOpen={setModalIsOpen}

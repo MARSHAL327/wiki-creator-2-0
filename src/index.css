@@ -433,13 +433,6 @@ code {
     left: 0;
     z-index: 5;
     background-color: #fff;
-    transform: translateX(100vw);
-    transition: transform 1s var(--ease-function);
-}
-
-.guide-modal_active {
-    transform: translateX(0);
-    transition: transform 1s var(--ease-function);
 }
 
 .guide-modal__swiper, .guide-modal__swiper img {
@@ -504,6 +497,24 @@ code {
 
     100% {
         transform: translateX(-30px);
+        opacity: 0;
+    }
+}
+
+.fade-exit-active {
+    animation: fade .6s forwards;
+}
+
+.fade-enter-active {
+    animation: fade .6s alternate-reverse;
+}
+
+@keyframes fade {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
         opacity: 0;
     }
 }
